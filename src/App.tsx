@@ -36,6 +36,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<ValidatedRoute type="public" />}>
+              <Route path="/" element={<div>Landing Page</div>} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
             </Route>
