@@ -15,6 +15,24 @@ export const cuentas = [
 export const transacciones = [
   // Ingresos
   {
+    id: "Demotx_001",
+    tipo: "income",
+    monto: 1000,
+    fecha: "2025-06-01",
+    categoria: "Sueldo",
+    cuentaId: "cuenta_1",
+    notas: "Pago mensual de trabajo",
+  },
+  {
+    id: "Demotx_004",
+    tipo: "expenses",
+    monto: 200,
+    fecha: "2025-06-03",
+    categoria: "Alquiler",
+    cuentaId: "cuenta_1",
+    notas: "Renta del mes",
+  },
+  {
     id: "tx_001",
     tipo: "income",
     monto: 2500,

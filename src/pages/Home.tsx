@@ -31,7 +31,7 @@ const Home = () => {
         <CardBalance title="Monthly Income" totalBalance={income} arrow="TrendingUp" textColorTitle="text-green-600" />
         <CardBalance title="Monthly Expenses" totalBalance={expenses} arrow="TrendingDown" textColorTitle="text-red-600" />
       </div>
-      <div className="p-6 mx-auto max-w-[1024px]"> 
+      <div className="p-6 mx-auto max-w-[1024px] flex flex-col gap-4"> 
         <IncomeExpenses />
       </div>
       {/* <Budgets /> */}
