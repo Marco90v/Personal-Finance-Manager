@@ -17,7 +17,7 @@ export function generarRangoMensual(
   expenseCategory = "All", 
   accountId = "All"
   ) {
-  // console.log(mes, category, accountId)
+  // console.log(mes, incomeCategory, expenseCategory, accountId);
   const diasDelMes = Array.from({ length: dayjs(mes).daysInMonth() }, (_, i) =>
     dayjs(`${mes}-${String(i + 1).padStart(2, "0")}`).format("YYYY-MM-DD")
   );

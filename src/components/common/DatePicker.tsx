@@ -30,9 +30,9 @@ function Calendar22({date, setDate}:props) {
           <Button
             variant="outline"
             id="date"
-            className="w-48 justify-between font-normal text-gray-500"
+            className="w-full md:w-[235px] justify-between font-normal text-gray-500"
           >
-            {date ? date.toLocaleDateString() : "Select date"}
+            {date ? date.toLocaleDateString() : "Select by date"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>

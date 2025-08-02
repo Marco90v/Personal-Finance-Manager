@@ -58,7 +58,7 @@ const IncomeExpenses = () => {
 
   return (
     <>
-      <div className="flex flex-row gap-3">
+      <div className="flex flex-col gap-5 md:flex-row md:gap-3">
         {/* <SelectFilter type="month" /> */}
         <DatePicker date={date} setDate={setDate} />
         <SelectFilter type="income" data={incomeCategory} setData={setIncomeCategory} />

@@ -23,12 +23,12 @@ function SelectFilter({type, data, setData}:props) {
   if(type === "income") {
     items = ["All", "Sueldo", "Freelance", "Venta"]
     title = "Filter by income category"
-    selectLabel = "Select a category by income"
+    selectLabel = "Select by income"
   }
   if(type === "expenses") {
     items = ["All", "Alquiler", "Servicios", "Comida", "Transporte", "Ocio", "Compras"]
     title = "Filter by expense category"
-    selectLabel = "Select a category by expense"
+    selectLabel = "Select by expense"
   }
   if(type === "account") {
     items = ["All", "cuenta_1", "cuenta_2"]
@@ -41,7 +41,7 @@ function SelectFilter({type, data, setData}:props) {
           {title}
       </Label>
       <Select defaultValue={data} onValueChange={setData}>
-        <SelectTrigger className="w-[250px]">
+        <SelectTrigger className="w-full md:w-[235px]">
           <SelectValue placeholder={selectLabel} />
         </SelectTrigger>
         <SelectContent>
