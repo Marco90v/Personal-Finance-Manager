@@ -3,12 +3,12 @@ export const cuentas = [
   {
     id: "cuenta_1",
     nombre: "Cuenta Bancaria",
-    saldoInicial: 3000,
+    saldo: 3000,
   },
   {
     id: "cuenta_2",
     nombre: "Efectivo",
-    saldoInicial: 500,
+    saldo: 500,
   },
 ];
 

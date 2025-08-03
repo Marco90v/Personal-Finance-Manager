@@ -3,7 +3,7 @@ import CardBalance from "@/components/common/CardBalance"
 import Goals from "@/components/common/Goals"
 import IncomeExpenses from "@/components/common/IncomeExpenses"
 import Spending from "@/components/common/Spending"
-import {transacciones} from "@/data/mockData"
+import { transacciones, cuentas } from "@/data/mockData"
 
 // console.log(transacciones)
 
@@ -19,7 +19,7 @@ interface transacciones {
 
 const income = transacciones.filter((tx:transacciones) => tx.tipo === "income").reduce((acum:number, tx:transacciones) => acum + tx.monto, 0)
 const expenses = transacciones.filter((tx:transacciones) => tx.tipo === "expenses").reduce((acum:number, tx:transacciones) => acum + tx.monto, 0)
-const total = income - expenses
+const total = cuentas.reduce((acc:number, cuenta:cuentas) => acc + cuenta.saldo, 0)
 
 // console.log(income, expenses, total)
 
