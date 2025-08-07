@@ -41,7 +41,7 @@ function SelectFilter({type, data, setData}:props) {
           {title}
       </Label>
       <Select defaultValue={data} onValueChange={setData}>
-        <SelectTrigger className="w-full md:w-[235px]">
+        <SelectTrigger className="w-full">
           <SelectValue placeholder={selectLabel} />
         </SelectTrigger>
         <SelectContent>
