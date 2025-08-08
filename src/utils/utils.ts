@@ -1,23 +1,24 @@
+import type { Transaccion } from "@/type";
 import dayjs from "dayjs";
 
-interface transacciones {
-  id: string,
-  tipo: "income" | "expenses",
-  monto: number,
-  fecha: string,
-  categoria: "Sueldo" | "Freelance" | "Venta" | "Alquiler" | "Servicios" | "Comida" | "Transporte" | "Ocio" | "Compras",
-  cuentaId: "cuenta_1" | "cuenta_2",
-  notas: string,
-}
+// interface transacciones {
+//   id: string,
+//   tipo: "income" | "expenses",
+//   monto: number,
+//   fecha: string,
+//   categoria: "Sueldo" | "Freelance" | "Venta" | "Alquiler" | "Servicios" | "Comida" | "Transporte" | "Ocio" | "Compras",
+//   cuentaId: "cuenta_1" | "cuenta_2",
+//   notas: string,
+// }
 
 export function generarRangoMensual(
-  transacciones:transacciones[], 
+  transacciones:Transaccion[], 
   mes = dayjs().format("YYYY-MM"), 
   incomeCategory = "All", 
   expenseCategory = "All", 
   accountId = "All"
   ) {
-  // console.log(mes, incomeCategory, expenseCategory, accountId);
+  
   const diasDelMes = Array.from({ length: dayjs(mes).daysInMonth() }, (_, i) =>
     dayjs(`${mes}-${String(i + 1).padStart(2, "0")}`).format("YYYY-MM-DD")
   );

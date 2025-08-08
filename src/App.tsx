@@ -3,7 +3,7 @@
 // import CardBalance from "@/components/common/CardBalance"
 // import Budgets from "@/components/common/Budgets"
 // import Goals from "@/components/common/Goals"
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";

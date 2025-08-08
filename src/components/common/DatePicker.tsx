@@ -1,13 +1,8 @@
 import { ChevronDownIcon } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Label } from "@/components/ui/label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useState } from "react"
 // import dayjs from "dayjs"
 
@@ -18,7 +13,6 @@ interface props {
 
 function Calendar22({date, setDate}:props) {
   const [open, setOpen] = useState(false)
-  // const [date, setDate] = useState<Date | undefined>(undefined) 
 
   return (
     <div className="flex flex-col gap-3">
