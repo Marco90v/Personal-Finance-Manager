@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+// import * as z from "zod"
 import { CalendarIcon, DollarSign } from "lucide-react"
 import { format } from "date-fns"
 
@@ -15,45 +15,44 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
 import dayjs from "dayjs"
-
-const formSchema = z.object({
-  amount: z
-    .string()
-    .min(1, "Amount is required")
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: "Amount must be a positive number",
-    }),
-  date: z.date({
-    error: "Date is required",
-  }),
-  source: z.string().min(1, "Source is required"),
-  account: z.string().min(1, "Account is required"),
-  notes: z.string().optional(),
-})
-
-type FormData = z.infer<typeof formSchema>
-
-const incomeSources = ["Salary", "Freelance", "Investment", "Business", "Rental", "Gift", "Other"]
-
-const accounts = ["Checking Account", "Savings Account", "Cash", "Credit Card", "Investment Account"]
+import { accounts, incomesTypes } from "@/data/mockData"
+import type { FormIncomeType, Transaccion } from "@/type"
+import { formSchemaIncome } from "@/schemas/schemaIncomes"
+import { useFinanceStore } from "@/stores/financeStore"
+import { useShallow } from "zustand/shallow"
+import { formatNumber, recalcularCaret, removeFormat } from "@/utils/utils"
 
 function AddIncomeForm() {
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const {addTransaccion} =  useFinanceStore(useShallow(s => ({
+    addTransaccion: s.addTransaccion,
+  })))
   const [isCustomSource, setIsCustomSource] = useState(false)
 
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormIncomeType>({
+    resolver: zodResolver(formSchemaIncome),
     defaultValues: {
-      amount: "",
+      amount: undefined,
       date: new Date(),
-      source: "",
-      account: "",
+      origin: "",
+      accountId: "",
       notes: "",
     },
   })
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data)
-    console.log(dayjs(data.date).format("YYYY-MM-DD"))
+  const onSubmit = (data: FormIncomeType) => {
+    const newData:Transaccion = {
+      ...data,
+      id: crypto.randomUUID(),
+      type: "income",
+      date: dayjs(data.date).format("YYYY-MM-DD")
+    }
+    // console.log("Form submitted:", newData)
+    addTransaccion(newData)
+    form.reset()
+    // console.log(dayjs(data.date).format("YYYY-MM-DD"))
     // Handle form submission here
     // You can integrate this with your backend API
   }
@@ -80,7 +79,24 @@ function AddIncomeForm() {
                     <FormControl>
                       <div className="relative">
                         <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input {...field} type="number" step="0.01" placeholder="0.00" className="pl-10" />
+                        <Input
+                          {...field}
+                          ref={inputRef}
+                          type="text"
+                          step="0,01"
+                          placeholder="0,00"
+                          className="pl-10"
+                          value={formatNumber(field.value ?? "")}
+                          onChange={(e) =>{
+                            const start = e.target.selectionStart ?? 0;
+                            const numericValue = removeFormat(e)
+                            field.onChange(numericValue)
+                            // 🔹 recalcular caret después del render
+                            requestAnimationFrame(() => {
+                              recalcularCaret(inputRef, e, numericValue, start);
+                            });
+                          }}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -123,10 +139,10 @@ function AddIncomeForm() {
 
               <FormField
                 control={form.control}
-                name="source"
+                name="origin"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Source</FormLabel>
+                    <FormLabel>Origin</FormLabel>
                     <div className="space-y-3">
                       <Select
                         value={isCustomSource ? "custom" : field.value}
@@ -146,9 +162,9 @@ function AddIncomeForm() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {incomeSources.map((source) => (
-                            <SelectItem key={source} value={source}>
-                              {source}
+                          {incomesTypes.map(({id, name}) => (
+                            <SelectItem key={id} value={name}>
+                              {name}
                             </SelectItem>
                           ))}
                           <SelectItem value="custom">Custom...</SelectItem>
@@ -167,7 +183,7 @@ function AddIncomeForm() {
 
               <FormField
                 control={form.control}
-                name="account"
+                name="accountId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Associated Account</FormLabel>
@@ -178,9 +194,9 @@ function AddIncomeForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {accounts.map((account) => (
-                          <SelectItem key={account} value={account}>
-                            {account}
+                        {accounts.map(({id, name}) => (
+                          <SelectItem key={id} value={id}>
+                            {name}
                           </SelectItem>
                         ))}
                       </SelectContent>

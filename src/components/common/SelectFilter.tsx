@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
+import { accounts, expensesTypes, incomesTypes } from "@/data/mockData"
 
 type Type = "income" | "expenses" | "account"
 
@@ -24,17 +25,17 @@ interface props {
 
 const labels:Record<Type, labels> = {
   income : {
-    items: ["All", "Sueldo", "Freelance", "Venta"],
+    items: incomesTypes.map(t => t.name),
     title: "Filter by income category",
     selectLabel: "Select by income",
   },
   expenses : {
-    items: ["All", "Alquiler", "Servicios", "Comida", "Transporte", "Ocio", "Compras"],
+    items: expensesTypes.map(t => t.name),
     title: "Filter by expense category",
     selectLabel: "Select by expense",
   },
   account : {
-    items: ["All", "cuenta_1", "cuenta_2"],
+    items: accounts.map(c => c.name),
     title: "Filter by account",
     selectLabel: "Select an account",
   }
@@ -52,7 +53,8 @@ function SelectFilter({type, data, setData}:props) {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem key={"void"} value={" "}>
+            <SelectItem key="0001" value={"All"}>
+              All
             </SelectItem>
             {labels[type].items.map((value) => (
               <SelectItem key={value} value={value}>

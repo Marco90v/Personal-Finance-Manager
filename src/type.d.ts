@@ -1,17 +1,32 @@
+export type FormIncomeType = z.infer<typeof formSchemaIncome>
+
 export interface Cuenta {
   id: string;
-  nombre: string;
-  saldo: number;
+  name: string;
+  balance: number;
+  description?: string;
 }
 
-export type TipoTransaccion = "income" | "expenses";
+export type TypeTransaccion = "income" | "expenses";
 
 export interface Transaccion {
   id: string;
-  tipo: TipoTransaccion;
-  monto: number;
-  fecha: string;
-  categoria: string;
-  cuentaId: string;
-  notas?: string;
+  type: TypeTransaccion;
+  amount: number;
+  date: string;
+  origin: string;
+  accountId: string;
+  notes?: string;
+}
+
+export interface IncomesType {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface ExpensesType {
+  id: string;
+  name: string;
+  description: string;
 }

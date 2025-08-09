@@ -3,7 +3,7 @@ import type { Cuenta, Transaccion } from "@/type";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
-  cuentas as cuentasMock,
+  accounts as cuentasMock,
   transacciones as transaccionesMock,
 } from "@/data/mockData";
 
@@ -42,7 +42,7 @@ export const useFinanceStore = create<FinanceStore>()(
       removeCuenta: (id) =>
         set((state) => ({
           cuentas: state.cuentas.filter((c) => c.id !== id),
-          transacciones: state.transacciones.filter((t) => t.cuentaId !== id),
+          transacciones: state.transacciones.filter((t) => t.accountId !== id),
         })),
 
       addTransaccion: (tx) =>
@@ -62,26 +62,26 @@ export const useFinanceStore = create<FinanceStore>()(
 
       getSaldoTotal: () => {
         const { cuentas } = get();
-        return cuentas.reduce((total, cuenta) => total + cuenta.saldo, 0);
+        return cuentas.reduce((total, cuenta) => total + cuenta.balance, 0);
       },
 
       getIncomesTotal: () => {
         const { transacciones } = get();
         return transacciones
-          .filter((t) => t.tipo === "income")
-          .reduce((total, tx) => total + tx.monto, 0);
+          .filter((t) => t.type === "income")
+          .reduce((total, tx) => total + tx.amount, 0);
       },
 
       getExpensesTotal: () => {
         const { transacciones } = get();
         return transacciones
-          .filter((t) => t.tipo === "expenses")
-          .reduce((total, tx) => total + tx.monto, 0);
+          .filter((t) => t.type === "expenses")
+          .reduce((total, tx) => total + tx.amount, 0);
       },
 
       getTransaccionesPorCuenta: (cuentaId) => {
         const { transacciones } = get();
-        return transacciones.filter((t) => t.cuentaId === cuentaId);
+        return transacciones.filter((t) => t.accountId === cuentaId);
       },
 
       cargarDatosDesdeFirebase: async () => {
