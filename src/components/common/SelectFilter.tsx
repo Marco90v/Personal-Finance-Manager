@@ -1,11 +1,4 @@
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { accounts, expensesTypes, incomesTypes } from "@/data/mockData"
 
@@ -29,8 +22,7 @@ const labels:Record<Type, labels> = {
     title: "Filter by income category",
     selectLabel: "Select by income",
   },
-  expenses : {
-    items: expensesTypes.map(t => t.name),
+  expenses : { items: expensesTypes.map(t => t.name),
     title: "Filter by expense category",
     selectLabel: "Select by expense",
   },

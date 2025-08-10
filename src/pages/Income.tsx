@@ -16,7 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { cn } from "@/lib/utils"
 import dayjs from "dayjs"
 import { accounts, incomesTypes } from "@/data/mockData"
-import type { FormIncomeType, Transaccion } from "@/type"
+import type { FormIncomeType, Transaction } from "@/type"
 import { formSchemaIncome } from "@/schemas/schemaIncomes"
 import { useFinanceStore } from "@/stores/financeStore"
 import { useShallow } from "zustand/shallow"
@@ -43,7 +43,7 @@ function AddIncomeForm() {
   })
 
   const onSubmit = (data: FormIncomeType) => {
-    const newData:Transaccion = {
+    const newData:Transaction = {
       ...data,
       id: crypto.randomUUID(),
       type: "income",

@@ -9,7 +9,7 @@ import {
 
 interface FinanceStore {
   accounts: Account[];
-  transacciones: Transaction[];
+  transactions: Transaction[];
   addAccount: (cuenta: Account) => void;
   updateAccount: (id: string, data: Partial<Account>) => void;
   removeAccount: (id: string) => void;
@@ -28,7 +28,7 @@ export const useFinanceStore = create<FinanceStore>()(
   persist(
     (set, get) => ({
       accounts: cuentasMock,
-      transacciones: transaccionesMock,
+      transactions: transaccionesMock,
 
       addAccount: (account) =>
         set((state) => ({ accounts: [...state.accounts, account] })),
@@ -47,11 +47,11 @@ export const useFinanceStore = create<FinanceStore>()(
         })),
 
       addTransaccion: (tx) =>
-        set((state) => ({ transacciones: [...state.transacciones, tx] })),
+        set((state) => ({ transactions: [...state.transactions, tx] })),
 
       updateTransaccion: (id, data) =>
         set((state) => ({
-          transacciones: state.transacciones.map((t) => {
+          transactions: state.transactions.map((t) => {
             if (t.id !== id) return t;
 
             if (t.type === "income") {
@@ -64,7 +64,7 @@ export const useFinanceStore = create<FinanceStore>()(
 
       removeTransaccion: (id) =>
         set((state) => ({
-          transacciones: state.transacciones.filter((t) => t.id !== id),
+          transactions: state.transactions.filter((t) => t.id !== id),
         })),
 
       getTotalBalance: () => {
@@ -73,22 +73,22 @@ export const useFinanceStore = create<FinanceStore>()(
       },
 
       getIncomesTotal: () => {
-        const { transacciones } = get();
-        return transacciones
+        const { transactions } = get();
+        return transactions
           .filter((t) => t.type === "income")
           .reduce((total, tx) => total + tx.amount, 0);
       },
 
       getExpensesTotal: () => {
-        const { transacciones } = get();
-        return transacciones
+        const { transactions } = get();
+        return transactions
           .filter((t) => t.type === "expense")
           .reduce((total, tx) => total + tx.amount, 0);
       },
 
       getTransaccionesPorCuenta: (cuentaId) => {
-        const { transacciones } = get();
-        return transacciones.filter((t) => t.accountId === cuentaId);
+        const { transactions } = get();
+        return transactions.filter((t) => t.accountId === cuentaId);
       },
 
       cargarDatosDesdeFirebase: async () => {
@@ -106,7 +106,7 @@ export const useFinanceStore = create<FinanceStore>()(
       storage: createJSONStorage(() => localStorage), // usa localStorage
       partialize: (state) => ({
         cuentas: state.accounts,
-        transacciones: state.transacciones,
+        transactions: state.transactions,
       }), // solo persiste datos, no funciones
     }
   )

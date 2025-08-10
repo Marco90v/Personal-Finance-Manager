@@ -21,26 +21,13 @@ import BodyTableHistory from "@/components/common/BodyTableHistory"
 import { filterTransactionSchema } from "@/schemas/schemaFilterTransaction"
 import { filterChange } from "@/utils/utils"
 import HeadTable from "@/components/common/HeadTable"
-
-interface HeadersTable {
-  name: string
-  field: SortField
-  sortField: SortField
-}
-
-const headersTable:HeadersTable[] = [
-  { name: "Date", field: "date", sortField: "date" },
-  { name: "Type", field: "type", sortField: "type" },
-  { name: "Origin", field: "origin", sortField: "origin" },
-  { name: "Account", field: "accountId", sortField: "accountId" },
-  { name: "Amount", field: "amount", sortField: "amount" },
-]
+import { headersTable } from "@/lib/const"
 
 export default function TransactionHistory() {
 
   const { accounts,  transactions } =  useFinanceStore(useShallow(s => ({
     accounts: s.accounts,
-    transactions: s.transacciones,
+    transactions: s.transactions,
   })))
 
   const form = useForm<TransactionFilters>({
@@ -60,10 +47,12 @@ export default function TransactionHistory() {
   }) 
 
   const [handleFilterChange, setHandleFilterChange] = useState<TransactionFilters>({...form.getValues()})
-
   const watchedType = form.watch("type")
-
   const filterAndSortTransactions = filterChange(transactions, handleFilterChange, sortState)
+  const availableOrigin =
+    watchedType === "all"
+      ? [...incomesTypes, ...expensesTypes]
+      : { income: incomesTypes, expense: expensesTypes }[watchedType as "income" | "expense"] || []
 
   const handleSort = (field: SortField) => {
     let direction: SortDirection = "asc"
@@ -77,26 +66,7 @@ export default function TransactionHistory() {
     }
 
     setSortState({ field: direction ? field : null, direction })
-  }
-
-  // const getSortIcon = (field: SortField) => {
-  //   if (sortState.field !== field) {
-  //     return <ChevronsUpDown className="ml-2 h-4 w-4" />
-  //   }
-
-  //   if (sortState.direction === "asc") {
-  //     return <ChevronUp className="ml-2 h-4 w-4" />
-  //   } else if (sortState.direction === "desc") {
-  //     return <ChevronDown className="ml-2 h-4 w-4" />
-  //   }
-
-  //   return <ChevronsUpDown className="ml-2 h-4 w-4" />
-  // }
-
-  const availableOrigin =
-    watchedType === "all"
-      ? [...incomesTypes, ...expensesTypes]
-      : { income: incomesTypes, expense: expensesTypes }[watchedType as "income" | "expense"] || []
+  } 
 
   return (
     <div className="mx-4 md:mx-8 space-y-6">

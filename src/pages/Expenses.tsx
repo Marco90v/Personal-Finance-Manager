@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
 import { accounts, expensesTypes } from "@/data/mockData"
 import { formatNumber, recalcularCaret, removeFormat } from "@/utils/utils"
 import { useRef } from "react"
-import type { FormExpenseType, Transaccion } from "@/type"
+import type { FormExpenseType, Transaction } from "@/type"
 import { formSchemaExpense } from "@/schemas/schemaExpenses"
 import dayjs from "dayjs"
 import { useFinanceStore } from "@/stores/financeStore"
@@ -46,7 +46,7 @@ export default function AddExpenseForm() {
   })
 
   function handleSubmit(data: FormExpenseType) {
-    const newData:Transaccion = {
+    const newData:Transaction = {
       ...data,
       id: crypto.randomUUID(),
       type: "expenses",

@@ -16,8 +16,8 @@ const grafic = [
 
 const IncomeExpenses = () => {
 
-  const {transacciones} =  useFinanceStore(useShallow(s => ({
-    transacciones: s.transacciones,
+  const {transactions} =  useFinanceStore(useShallow(s => ({
+    transactions: s.transactions,
   })))
 
   const [date, setDate] = useState<Date | undefined>(undefined)
@@ -26,8 +26,8 @@ const IncomeExpenses = () => {
   const [account, setaccount] = useState<string | undefined>(undefined) 
 
   const dataMensual = date ? 
-    generarRangoMensual(transacciones, date?.toISOString().slice(0, 7), incomeCategory, expenseCategory, account) : 
-    generarRangoMensual(transacciones, undefined, incomeCategory, expenseCategory, account)
+    generarRangoMensual(transactions, date?.toISOString().slice(0, 7), incomeCategory, expenseCategory, account) : 
+    generarRangoMensual(transactions, undefined, incomeCategory, expenseCategory, account)
 
   return (
     <>
