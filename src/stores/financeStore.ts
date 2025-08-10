@@ -1,5 +1,5 @@
 // src/store/financeStore.ts
-import type { Cuenta, Transaccion } from "@/type";
+import type { Cuenta, ExpenseTransaction, IncomeTransaction, Transaccion } from "@/type";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
@@ -50,9 +50,15 @@ export const useFinanceStore = create<FinanceStore>()(
 
       updateTransaccion: (id, data) =>
         set((state) => ({
-          transacciones: state.transacciones.map((t) =>
-            t.id === id ? { ...t, ...data } : t
-          ),
+          transacciones: state.transacciones.map((t) => {
+            if (t.id !== id) return t;
+
+            if (t.type === "income") {
+              return { ...t, ...data, type: "income", recurrence: null } as IncomeTransaction;
+            } else {
+              return { ...t, ...data, type: "expenses" } as ExpenseTransaction;
+            }
+          }),
         })),
 
       removeTransaccion: (id) =>

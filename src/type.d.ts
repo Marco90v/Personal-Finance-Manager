@@ -1,4 +1,5 @@
 export type FormIncomeType = z.infer<typeof formSchemaIncome>
+export type FormExpenseType = z.infer<typeof formSchemaExpense>
 
 export interface Cuenta {
   id: string;
@@ -9,15 +10,43 @@ export interface Cuenta {
 
 export type TypeTransaccion = "income" | "expenses";
 
-export interface Transaccion {
+type Recurrence = "fixed" | "variable";
+
+// export interface Transaccion {
+//   id: string;
+//   type: TypeTransaccion;
+//   amount: number;
+//   date: string;
+//   origin: string;
+//   accountId: string;
+//   notes?: string;
+// }
+
+type IncomeTransaction = {
   id: string;
-  type: TypeTransaccion;
+  type: "income";
+  recurrence?: Recurrence | null; // null o undefined
   amount: number;
   date: string;
   origin: string;
   accountId: string;
   notes?: string;
-}
+};
+
+// Transacción de gastos
+type ExpenseTransaction = {
+  id: string;
+  type: "expenses";
+  recurrence: Recurrence; // obligatorio y con valor "fixed" o "variable"
+  amount: number;
+  date: string;
+  origin: string;
+  accountId: string;
+  notes?: string;
+};
+
+// Unión de ambos
+export type Transaccion = IncomeTransaction | ExpenseTransaction;
 
 export interface IncomesType {
   id: string;

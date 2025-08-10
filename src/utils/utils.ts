@@ -61,7 +61,7 @@ export const formatNumber = (value: number | string) => {
   if (value === "" || value === null || isNaN(Number(value))) return "";
   // Formato con separador de miles y 2 decimales
   return new Intl.NumberFormat("es-ES", {
-    minimumFractionDigits: 1,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 4
   }).format(Number(value));
 };

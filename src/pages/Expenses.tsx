@@ -1,8 +1,5 @@
-"use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 
@@ -15,75 +12,48 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { accounts, expensesTypes } from "@/data/mockData"
+import { formatNumber, recalcularCaret, removeFormat } from "@/utils/utils"
+import { useRef } from "react"
+import type { FormExpenseType, Transaccion } from "@/type"
+import { formSchemaExpense } from "@/schemas/schemaExpenses"
+import dayjs from "dayjs"
+import { useFinanceStore } from "@/stores/financeStore"
+import { useShallow } from "zustand/shallow"
 
-const formSchema = z.object({
-  amount: z
-    .string()
-    .min(1, {
-      message: "Amount is required.",
-    })
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: "Amount must be a positive number.",
-    }),
-  date: z.date({
-    error: "Date is required.",
-  }),
-  type: z.enum(["fixed", "variable"], {
-    error: "Please select an expense type.",
-  }),
-  category: z.string().min(1, {
-    message: "Please select a category.",
-  }),
-  account: z.string().min(1, {
-    message: "Please select an account.",
-  }),
-  notes: z.string().optional(),
-})
+// interface AddExpenseFormProps {
+//   onSubmit?: (data: FormExpenseType) => void
+// }
 
-type FormData = z.infer<typeof formSchema>
+export default function AddExpenseForm() {
 
-const categories = [
-  { value: "food", label: "Food & Dining" },
-  { value: "rent", label: "Rent & Housing" },
-  { value: "transportation", label: "Transportation" },
-  { value: "utilities", label: "Utilities" },
-  { value: "healthcare", label: "Healthcare" },
-  { value: "entertainment", label: "Entertainment" },
-  { value: "shopping", label: "Shopping" },
-  { value: "education", label: "Education" },
-  { value: "other", label: "Other" },
-]
+  const inputRef = useRef<HTMLInputElement>(null);
 
-const accounts = [
-  { value: "checking", label: "Checking Account" },
-  { value: "savings", label: "Savings Account" },
-  { value: "credit-card", label: "Credit Card" },
-  { value: "cash", label: "Cash" },
-]
+  const {addTransaccion} =  useFinanceStore(useShallow(s => ({
+    addTransaccion: s.addTransaccion,
+  })))
 
-interface AddExpenseFormProps {
-  onSubmit?: (data: FormData) => void
-}
-
-export default function AddExpenseForm({ onSubmit }: AddExpenseFormProps) {
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormExpenseType>({
+    resolver: zodResolver(formSchemaExpense),
     defaultValues: {
-      amount: "",
+      amount: undefined,
       date: new Date(),
       notes: "",
+      recurrence: "",
+      category: "",
+      account: "",
     },
   })
 
-  function handleSubmit(values: FormData) {
-    console.log(values)
-    onSubmit?.(values)
-    // Reset form after successful submission
-    form.reset({
-      amount: "",
-      date: new Date(),
-      notes: "",
-    })
+  function handleSubmit(data: FormExpenseType) {
+    const newData:Transaccion = {
+      ...data,
+      id: crypto.randomUUID(),
+      type: "expenses",
+      date: dayjs(data.date).format("YYYY-MM-DD")
+    }
+    addTransaccion(newData)
+    form.reset()
   }
 
   return (
@@ -108,7 +78,24 @@ export default function AddExpenseForm({ onSubmit }: AddExpenseFormProps) {
                           <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
                             $
                           </span>
-                          <Input type="number" step="0.01" placeholder="0.00" className="pl-8" {...field} />
+                          <Input
+                            {...field}
+                            ref={inputRef}
+                            type="text"
+                            step="0,01"
+                            placeholder="0,00"
+                            className="pl-8"
+                            value={formatNumber(field.value ?? "")}
+                            onChange={(e) =>{
+                              const start = e.target.selectionStart ?? 0;
+                              const numericValue = removeFormat(e)
+                              field.onChange(numericValue)
+                              // 🔹 recalcular caret después del render
+                              requestAnimationFrame(() => {
+                                recalcularCaret(inputRef, e, numericValue, start);
+                              });
+                            }}
+                          />
                         </div>
                       </FormControl>
                       <div className="min-h-[20px]">
@@ -155,11 +142,11 @@ export default function AddExpenseForm({ onSubmit }: AddExpenseFormProps) {
 
                 <FormField
                   control={form.control}
-                  name="type"
+                  name="recurrence"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Type</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormLabel>Recurrence</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                         <FormControl>
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select expense type" />
@@ -183,16 +170,16 @@ export default function AddExpenseForm({ onSubmit }: AddExpenseFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Category</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                         <FormControl>
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category.value} value={category.value}>
-                              {category.label}
+                          {expensesTypes.map(({id, name}) => (
+                            <SelectItem key={id} value={id}>
+                              {name}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -211,16 +198,16 @@ export default function AddExpenseForm({ onSubmit }: AddExpenseFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Associated Account</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                       <FormControl>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select account" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {accounts.map((account) => (
-                          <SelectItem key={account.value} value={account.value}>
-                            {account.label}
+                        {accounts.map(({id, name}) => (
+                          <SelectItem key={id} value={id}>
+                            {name}
                           </SelectItem>
                         ))}
                       </SelectContent>

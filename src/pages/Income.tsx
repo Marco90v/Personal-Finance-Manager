@@ -49,12 +49,8 @@ function AddIncomeForm() {
       type: "income",
       date: dayjs(data.date).format("YYYY-MM-DD")
     }
-    // console.log("Form submitted:", newData)
     addTransaccion(newData)
     form.reset()
-    // console.log(dayjs(data.date).format("YYYY-MM-DD"))
-    // Handle form submission here
-    // You can integrate this with your backend API
   }
 
   return (
@@ -187,7 +183,7 @@ function AddIncomeForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Associated Account</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                       <FormControl>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select account" />
