@@ -1,8 +1,8 @@
-import type { Transaccion } from "@/type";
+import type { SortState, Transaction, TransactionFilters } from "@/type";
 import dayjs from "dayjs";
 
 export function generarRangoMensual(
-  transacciones:Transaccion[], 
+  transacciones:Transaction[], 
   mes = dayjs().format("YYYY-MM"), 
   incomeCategory = "All", 
   expenseCategory = "All", 
@@ -19,7 +19,7 @@ export function generarRangoMensual(
     const coincideIngreso =
       t.type === "income" && (incomeCategory === "All" || t.origin === incomeCategory);
     const coincideGasto =
-      t.type === "expenses" && (expenseCategory === "All" || t.origin === expenseCategory);
+      t.type === "expense" && (expenseCategory === "All" || t.origin === expenseCategory);
 
     const coincideCategoria =
       t.type === "income" ? coincideIngreso : coincideGasto;
@@ -33,7 +33,7 @@ export function generarRangoMensual(
       .reduce((sum, t) => sum + t.amount, 0);
 
     const expenses = transaccionesFiltradas
-      .filter((t) => t.type === "expenses" && t.date === date)
+      .filter((t) => t.type === "expense" && t.date === date)
       .reduce((sum, t) => sum + t.amount, 0);
 
     return { date, income, expenses };
@@ -95,4 +95,66 @@ export const recalcularCaret = (
 export function capitalize(str: string): string {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+export const filterChange = (transactions: Transaction[], filters: TransactionFilters, sortState:SortState) => {
+  // console.log(filters)
+  let filtered = transactions
+
+  // Filter by type
+  if (filters.type !== "all") {
+    filtered = filtered.filter((t) => t.type === filters.type)
+  }
+
+  // Filter by category
+  if (filters.origin && filters.origin !== "all") {
+    filtered = filtered.filter((t) => t.origin === filters.origin)
+  }
+
+  // Filter by account
+  if (filters.accountId && filters.accountId !== "all") {
+    filtered = filtered.filter((t) => t.accountId === filters.accountId)
+  }
+
+  // Filter by date range
+  if (filters.dateFrom) {
+    filtered = filtered.filter((t) => dayjs(t.date) >= dayjs(filters.dateFrom!))
+  }
+  if (filters.dateTo) {
+    filtered = filtered.filter((t) => t.date <= filters.dateTo!)
+  }
+
+  // Apply sorting to filtered results
+  const sorted = getSortedTransactions(filtered, sortState)
+  // setFilteredTransactions(sorted)
+  // return filtered
+  return sorted
+}
+
+export const getSortedTransactions = (transactions: Transaction[], sortState:SortState): Transaction[] => {
+  if (!sortState.field || !sortState.direction) return transactions
+
+  const field = sortState.field
+
+  return [...transactions].sort((a, b) => {
+    const aValue = a[field]
+    const bValue = b[field]
+
+    let comparison = 0
+
+    if (field === "date") {
+      // comparison = new Date(aValue).getTime() - new Date(bValue).getTime()
+      const aDate = dayjs(String(aValue))
+      const bDate = dayjs(String(bValue))
+      comparison = aDate.valueOf() - bDate.valueOf()
+    } else if (field === "amount") {
+      comparison = aValue as number - (bValue as number)
+    } else {
+      const aStr = String(aValue).toLowerCase()
+      const bStr = String(bValue).toLowerCase()
+      comparison = aStr.localeCompare(bStr)
+    }
+
+    return sortState.direction === "asc" ? comparison : -comparison
+  })
 }

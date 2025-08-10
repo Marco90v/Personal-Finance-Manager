@@ -1,5 +1,5 @@
 // src/store/financeStore.ts
-import type { Account, ExpenseTransaction, IncomeTransaction, Transaccion } from "@/type";
+import type { Account, ExpenseTransaction, IncomeTransaction, Transaction } from "@/type";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
@@ -9,18 +9,19 @@ import {
 
 interface FinanceStore {
   accounts: Account[];
-  transacciones: Transaccion[];
+  transacciones: Transaction[];
   addAccount: (cuenta: Account) => void;
   updateAccount: (id: string, data: Partial<Account>) => void;
   removeAccount: (id: string) => void;
-  addTransaccion: (tx: Transaccion) => void;
-  updateTransaccion: (id: string, data: Partial<Transaccion>) => void;
+  addTransaccion: (tx: Transaction) => void;
+  updateTransaccion: (id: string, data: Partial<Transaction>) => void;
   removeTransaccion: (id: string) => void;
   getTotalBalance: () => number;
   getIncomesTotal: () => number;
   getExpensesTotal: () => number;
-  getTransaccionesPorCuenta: (cuentaId: string) => Transaccion[];
+  getTransaccionesPorCuenta: (cuentaId: string) => Transaction[];
   cargarDatosDesdeFirebase?: () => Promise<void>;
+  getNameAccount: (id: string) => string;
 }
 
 export const useFinanceStore = create<FinanceStore>()(
@@ -56,7 +57,7 @@ export const useFinanceStore = create<FinanceStore>()(
             if (t.type === "income") {
               return { ...t, ...data, type: "income", recurrence: null } as IncomeTransaction;
             } else {
-              return { ...t, ...data, type: "expenses" } as ExpenseTransaction;
+              return { ...t, ...data, type: "expense" } as ExpenseTransaction;
             }
           }),
         })),
@@ -81,7 +82,7 @@ export const useFinanceStore = create<FinanceStore>()(
       getExpensesTotal: () => {
         const { transacciones } = get();
         return transacciones
-          .filter((t) => t.type === "expenses")
+          .filter((t) => t.type === "expense")
           .reduce((total, tx) => total + tx.amount, 0);
       },
 
@@ -93,6 +94,12 @@ export const useFinanceStore = create<FinanceStore>()(
       cargarDatosDesdeFirebase: async () => {
         // TODO: Implementar conexión con Firebase y actualizar estado
       },
+
+      getNameAccount: (id: string) => {
+        const { accounts } = get();
+        return accounts.find((a) => a.id === id)?.name ?? "Unknown Account";
+      },
+
     }),
     {
       name: "finance-store", // nombre clave en localStorage

@@ -1,6 +1,12 @@
+import type { formSchemaAccount } from "@/schemas/schemaAccount";
+import type { formSchemaExpense } from "@/schemas/schemaExpenses";
+import type { filterTransactionSchema } from "@/schemas/schemaFilterTransaction";
+import type { formSchemaIncome } from "@/schemas/schemaIncomes";
+
 export type FormIncomeType = z.infer<typeof formSchemaIncome>
 export type FormExpenseType = z.infer<typeof formSchemaExpense>
 export type FormAccountType = z.infer<typeof formSchemaAccount>
+export type TransactionFilters = z.infer<typeof filterTransactionSchema>
 
 export interface Account {
   id: string;
@@ -10,9 +16,12 @@ export interface Account {
   description?: string;
 }
 
-export type TypeTransaccion = "income" | "expenses";
+export type TypeTransaccion = "income" | "expense";
 
 type Recurrence = "fixed" | "variable";
+
+export type SortField = keyof Transaction
+export type SortDirection = "asc" | "desc" | null
 
 // export interface Transaccion {
 //   id: string;
@@ -23,6 +32,11 @@ type Recurrence = "fixed" | "variable";
 //   accountId: string;
 //   notes?: string;
 // }
+
+export interface SortState {
+  field: SortField | null
+  direction: SortDirection
+}
 
 type IncomeTransaction = {
   id: string;
@@ -38,7 +52,7 @@ type IncomeTransaction = {
 // Transacción de gastos
 type ExpenseTransaction = {
   id: string;
-  type: "expenses";
+  type: "expense";
   recurrence: Recurrence; // obligatorio y con valor "fixed" o "variable"
   amount: number;
   date: string;
@@ -48,7 +62,7 @@ type ExpenseTransaction = {
 };
 
 // Unión de ambos
-export type Transaccion = IncomeTransaction | ExpenseTransaction;
+export type Transaction = IncomeTransaction | ExpenseTransaction;
 
 export interface IncomesType {
   id: string;

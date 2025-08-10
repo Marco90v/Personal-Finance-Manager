@@ -47,8 +47,8 @@ const labels:Record<StatCardType, labels> = {
 
 const CardBalance = ({ type, porcentage }: CardBalanceProps) => {
 
-  const {getSaldoTotal, getIncomesTotal, getExpensesTotal} =  useFinanceStore(useShallow(s => ({
-    getSaldoTotal: s.getSaldoTotal,
+  const {getTotalBalance, getIncomesTotal, getExpensesTotal} =  useFinanceStore(useShallow(s => ({
+    getTotalBalance: s.getTotalBalance,
     getIncomesTotal: s.getIncomesTotal,
     getExpensesTotal: s.getExpensesTotal,
   })))
@@ -56,7 +56,7 @@ const CardBalance = ({ type, porcentage }: CardBalanceProps) => {
   const actionsMap: Record<StatCardType, () => number> = {
     incomes: getIncomesTotal,
     expenses: getExpensesTotal,
-    balance: getSaldoTotal,
+    balance: getTotalBalance,
   };
 
   const value = actionsMap[type]();
