@@ -1,10 +1,17 @@
 // mockData.js
 
-import type { Cuenta, ExpensesType, IncomesType, Transaccion } from "@/type";
+import type { Account, ExpensesType, IncomesType, Transaccion } from "@/type";
 
-export const accounts:Cuenta[] = [
-  { id: "cuenta_1", name: "Cuenta Bancaria", balance: 3000 },
-  { id: "cuenta_2", name: "Efectivo", balance: 500 },
+export const typeAccounts = [
+  {id : "0001", name: "bank"},
+  {id : "0002", name: "cash"},
+  {id : "0003", name: "investment"},
+  {id : "0004", name: "other"},
+];
+
+export const accounts:Account[] = [
+  { id: "cuenta_1", name: "Cuenta Bancaria", balance: 3000, type:"bank" },
+  { id: "cuenta_2", name: "Efectivo", balance: 500, type:"other" },
 ];
 
 export const transacciones: Transaccion[] = [

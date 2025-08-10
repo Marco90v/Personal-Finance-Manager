@@ -1,99 +1,70 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"// import * as z from "zod"
 import { Plus, Edit, Trash2, DollarSign } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 
-// Types
-interface Account {
-  id: string
-  name: string
-  balance: number
-  type: "bank" | "cash" | "investment" | "other"
+import { typeAccounts } from "@/data/mockData"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { formSchemaAccount } from "@/schemas/schemaAccount"
+import type { Account, FormAccountType } from "@/type"
+import { capitalize, formatNumber, recalcularCaret, removeFormat } from "@/utils/utils"
+import { useFinanceStore } from "@/stores/financeStore"
+import { useShallow } from "zustand/shallow"
+
+const getAccountTypeColor = (type: Account["type"]):string => {
+  switch (type) {
+    case "bank":
+      return "bg-blue-100 text-blue-800 hover:bg-blue-200"
+    case "cash":
+      return "bg-green-100 text-green-800 hover:bg-green-200"
+    case "investment":
+      return "bg-purple-100 text-purple-800 hover:bg-purple-200"
+    default:
+      return "bg-gray-100 text-gray-800 hover:bg-gray-200"
+  }
 }
 
-// Form schema
-const accountSchema = z.object({
-  name: z.string().min(1, "Account name is required").max(50, "Account name must be less than 50 characters"),
-  initialBalance: z.string().refine((val) => !isNaN(Number(val)), "Must be a valid number"),
-})
-
-type AccountFormData = z.infer<typeof accountSchema>
-
-// Mock data - replace with your actual data source
-const initialAccounts: Account[] = [
-  { id: "1", name: "Chase Checking", balance: 2500.0, type: "bank" },
-  { id: "2", name: "Savings Account", balance: 15000.0, type: "bank" },
-  { id: "3", name: "Cash Wallet", balance: 150.0, type: "cash" },
-  { id: "4", name: "Investment Portfolio", balance: 8500.0, type: "investment" },
-]
-
 export default function AccountsManager() {
-  const [accounts, setAccounts] = useState<Account[]>(initialAccounts)
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const {accounts, addAccount, updateAccount, removeAccount, getTotalBalance} =  useFinanceStore(useShallow(s => ({
+    accounts: s.accounts,
+    addAccount: s.addAccount,
+    updateAccount: s.updateAccount,
+    removeAccount: s.removeAccount,
+    getTotalBalance: s.getTotalBalance,
+  })))
+  
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [editingAccount, setEditingAccount] = useState<Account | null>(null)
 
-  const form = useForm<AccountFormData>({
-    resolver: zodResolver(accountSchema),
+  const form = useForm<FormAccountType>({
+    resolver: zodResolver(formSchemaAccount),
     defaultValues: {
       name: "",
-      initialBalance: "",
+      balance: undefined,
+      type: "",
+      description: "",
     },
   })
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount)
-  }
-
-  const getAccountTypeColor = (type: Account["type"]) => {
-    switch (type) {
-      case "bank":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200"
-      case "cash":
-        return "bg-green-100 text-green-800 hover:bg-green-200"
-      case "investment":
-        return "bg-purple-100 text-purple-800 hover:bg-purple-200"
-      default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200"
-    }
-  }
-
-  const onSubmit = (data: AccountFormData) => {
-    const newAccount: Account = {
-      id: Date.now().toString(),
-      name: data.name,
-      balance: Number.parseFloat(data.initialBalance),
-      type: "other", // You can add logic to determine type based on name or add a type field
-    }
+  const onSubmit = (data: FormAccountType) => {
 
     if (editingAccount) {
-      setAccounts(
-        accounts.map((acc) =>
-          acc.id === editingAccount.id
-            ? { ...acc, name: data.name, balance: Number.parseFloat(data.initialBalance) }
-            : acc,
-        ),
-      )
-      setEditingAccount(null)
+      updateAccount(editingAccount.id, data)
     } else {
-      setAccounts([...accounts, newAccount])
+      const newAccount: Account = {
+        ...data,
+        id: crypto.randomUUID(),
+      }
+      addAccount(newAccount)
     }
 
     form.reset()
@@ -103,15 +74,17 @@ export default function AccountsManager() {
   const handleEdit = (account: Account) => {
     setEditingAccount(account)
     form.setValue("name", account.name)
-    form.setValue("initialBalance", account.balance.toString())
+    form.setValue("balance", account.balance.toString())
+    form.setValue("type", account.type)
+    form.setValue("description", account.description)
     setIsAddDialogOpen(true)
   }
 
   const handleDelete = (accountId: string) => {
-    setAccounts(accounts.filter((acc) => acc.id !== accountId))
+    removeAccount(accountId)
   }
 
-  const totalBalance = accounts.reduce((sum, account) => sum + account.balance, 0)
+  // const totalBalance = accounts.reduce((sum, account) => sum + account.balance, 0)
 
   return (
     <div className="space-y-6 mx-4 my-8 xl:mx-auto max-w-[980px]"> 
@@ -124,6 +97,7 @@ export default function AccountsManager() {
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button
+              className="cursor-pointer"
               onClick={() => {
                 setEditingAccount(null)
                 form.reset()
@@ -159,22 +133,78 @@ export default function AccountsManager() {
                 />
                 <FormField
                   control={form.control}
-                  name="initialBalance"
+                  name="balance"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{editingAccount ? "Current Balance" : "Initial Balance"}</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                          <Input placeholder="0.00" className="pl-9" type="number" step="0.01" {...field} />
+                          <Input
+                            {...field}
+                              ref={inputRef}
+                              type="text"
+                              step="0,01"
+                              placeholder="0,00"
+                              className="pl-10"
+                              value={formatNumber(field.value ?? "")}
+                              onChange={(e) =>{
+                                const start = e.target.selectionStart ?? 0;
+                                const numericValue = removeFormat(e)
+                                field.onChange(numericValue)
+                                // 🔹 recalcular caret después del render
+                                requestAnimationFrame(() => {
+                                  recalcularCaret(inputRef, e, numericValue, start);
+                                });
+                              }}
+                          />
                         </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Associated Account</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select account" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {typeAccounts.map(({id, name}) => (
+                            <SelectItem key={id} value={name}>
+                              {capitalize(name)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Description" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="flex justify-end space-x-2 pt-4">
                   <Button
+                    className="cursor-pointer"
                     type="button"
                     variant="outline"
                     onClick={() => {
@@ -185,7 +215,7 @@ export default function AccountsManager() {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit">{editingAccount ? "Update Account" : "Add Account"}</Button>
+                  <Button className="cursor-pointer" type="submit">{editingAccount ? "Update Account" : "Add Account"}</Button>
                 </div>
               </form>
             </Form>
@@ -199,7 +229,7 @@ export default function AccountsManager() {
           <CardTitle className="text-lg">Total Balance</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold text-green-600">{formatCurrency(totalBalance)}</div>
+          <div className="text-3xl font-bold text-green-600">{formatNumber(getTotalBalance())}</div>
           <p className="text-sm text-muted-foreground mt-1">
             Across {accounts.length} account{accounts.length !== 1 ? "s" : ""}
           </p>
@@ -237,18 +267,18 @@ export default function AccountsManager() {
                             {account.type.charAt(0).toUpperCase() + account.type.slice(1)}
                           </Badge>
                         </div>
-                        <p className="text-2xl font-bold text-green-600">{formatCurrency(account.balance)}</p>
+                        <p className="text-2xl font-bold text-green-600">{formatNumber(account.balance)}</p>
                       </div>
                     </div>
                     <div className="flex flex-col items-center md:flex-row md:space-x-2">
-                      <Button variant="outline" size="sm" onClick={() => handleEdit(account)}>
+                      <Button className="cursor-pointer" variant="outline" size="sm" onClick={() => handleEdit(account)}>
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleDelete(account.id)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

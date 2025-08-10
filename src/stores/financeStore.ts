@@ -1,5 +1,5 @@
 // src/store/financeStore.ts
-import type { Cuenta, ExpenseTransaction, IncomeTransaction, Transaccion } from "@/type";
+import type { Account, ExpenseTransaction, IncomeTransaction, Transaccion } from "@/type";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
@@ -8,15 +8,15 @@ import {
 } from "@/data/mockData";
 
 interface FinanceStore {
-  cuentas: Cuenta[];
+  accounts: Account[];
   transacciones: Transaccion[];
-  addCuenta: (cuenta: Cuenta) => void;
-  updateCuenta: (id: string, data: Partial<Cuenta>) => void;
-  removeCuenta: (id: string) => void;
+  addAccount: (cuenta: Account) => void;
+  updateAccount: (id: string, data: Partial<Account>) => void;
+  removeAccount: (id: string) => void;
   addTransaccion: (tx: Transaccion) => void;
   updateTransaccion: (id: string, data: Partial<Transaccion>) => void;
   removeTransaccion: (id: string) => void;
-  getSaldoTotal: () => number;
+  getTotalBalance: () => number;
   getIncomesTotal: () => number;
   getExpensesTotal: () => number;
   getTransaccionesPorCuenta: (cuentaId: string) => Transaccion[];
@@ -26,23 +26,23 @@ interface FinanceStore {
 export const useFinanceStore = create<FinanceStore>()(
   persist(
     (set, get) => ({
-      cuentas: cuentasMock,
+      accounts: cuentasMock,
       transacciones: transaccionesMock,
 
-      addCuenta: (cuenta) =>
-        set((state) => ({ cuentas: [...state.cuentas, cuenta] })),
+      addAccount: (account) =>
+        set((state) => ({ accounts: [...state.accounts, account] })),
 
-      updateCuenta: (id, data) =>
+      updateAccount: (id, data) =>
         set((state) => ({
-          cuentas: state.cuentas.map((c) =>
+          accounts: state.accounts.map((c) =>
             c.id === id ? { ...c, ...data } : c
           ),
         })),
 
-      removeCuenta: (id) =>
+      removeAccount: (id) =>
         set((state) => ({
-          cuentas: state.cuentas.filter((c) => c.id !== id),
-          transacciones: state.transacciones.filter((t) => t.accountId !== id),
+          accounts: state.accounts.filter((c) => c.id !== id),
+          // transacciones: state.transacciones.filter((t) => t.accountId !== id),
         })),
 
       addTransaccion: (tx) =>
@@ -66,9 +66,9 @@ export const useFinanceStore = create<FinanceStore>()(
           transacciones: state.transacciones.filter((t) => t.id !== id),
         })),
 
-      getSaldoTotal: () => {
-        const { cuentas } = get();
-        return cuentas.reduce((total, cuenta) => total + cuenta.balance, 0);
+      getTotalBalance: () => {
+        const { accounts } = get();
+        return accounts.reduce((total, cuenta) => total + cuenta.balance, 0);
       },
 
       getIncomesTotal: () => {
@@ -98,7 +98,7 @@ export const useFinanceStore = create<FinanceStore>()(
       name: "finance-store", // nombre clave en localStorage
       storage: createJSONStorage(() => localStorage), // usa localStorage
       partialize: (state) => ({
-        cuentas: state.cuentas,
+        cuentas: state.accounts,
         transacciones: state.transacciones,
       }), // solo persiste datos, no funciones
     }

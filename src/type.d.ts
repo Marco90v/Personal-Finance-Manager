@@ -1,10 +1,12 @@
 export type FormIncomeType = z.infer<typeof formSchemaIncome>
 export type FormExpenseType = z.infer<typeof formSchemaExpense>
+export type FormAccountType = z.infer<typeof formSchemaAccount>
 
-export interface Cuenta {
+export interface Account {
   id: string;
   name: string;
   balance: number;
+  type: "bank" | "cash" | "investment" | "other";
   description?: string;
 }
 

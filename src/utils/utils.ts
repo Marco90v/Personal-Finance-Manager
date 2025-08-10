@@ -61,6 +61,8 @@ export const formatNumber = (value: number | string) => {
   if (value === "" || value === null || isNaN(Number(value))) return "";
   // Formato con separador de miles y 2 decimales
   return new Intl.NumberFormat("es-ES", {
+    // style: "currency",
+    // currency: "USD",
     minimumFractionDigits: 2,
     maximumFractionDigits: 4
   }).format(Number(value));
@@ -89,3 +91,8 @@ export const recalcularCaret = (
     inputRef.current.setSelectionRange(newPos, newPos);
   }
 };
+
+export function capitalize(str: string): string {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
