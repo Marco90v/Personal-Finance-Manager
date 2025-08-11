@@ -1,7 +1,6 @@
 import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-// import * as z from "zod"
 import { CalendarIcon, DollarSign } from "lucide-react"
 import { format } from "date-fns"
 
@@ -21,6 +20,7 @@ import { formSchemaIncome } from "@/schemas/schemaIncomes"
 import { useFinanceStore } from "@/stores/financeStore"
 import { useShallow } from "zustand/shallow"
 import { formatNumber, recalcularCaret, removeFormat } from "@/utils/utils"
+import { INCOME } from "@/lib/const"
 
 function AddIncomeForm() {
 
@@ -46,7 +46,7 @@ function AddIncomeForm() {
     const newData:Transaction = {
       ...data,
       id: crypto.randomUUID(),
-      type: "income",
+      type: INCOME,
       date: dayjs(data.date).format("YYYY-MM-DD")
     }
     addTransaccion(newData)
@@ -124,7 +124,6 @@ function AddIncomeForm() {
                           selected={field.value}
                           onSelect={field.onChange}
                           disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-                          initialFocus
                         />
                       </PopoverContent>
                     </Popover>

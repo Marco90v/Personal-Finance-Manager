@@ -20,10 +20,7 @@ import { formSchemaExpense } from "@/schemas/schemaExpenses"
 import dayjs from "dayjs"
 import { useFinanceStore } from "@/stores/financeStore"
 import { useShallow } from "zustand/shallow"
-
-// interface AddExpenseFormProps {
-//   onSubmit?: (data: FormExpenseType) => void
-// }
+import { EXPENSE } from "@/lib/const"
 
 export default function AddExpenseForm() {
 
@@ -49,7 +46,7 @@ export default function AddExpenseForm() {
     const newData:Transaction = {
       ...data,
       id: crypto.randomUUID(),
-      type: "expenses",
+      type: EXPENSE,
       date: dayjs(data.date).format("YYYY-MM-DD")
     }
     addTransaccion(newData)
@@ -129,7 +126,6 @@ export default function AddExpenseForm() {
                             selected={field.value}
                             onSelect={field.onChange}
                             disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-                            initialFocus
                           />
                         </PopoverContent>
                       </Popover>

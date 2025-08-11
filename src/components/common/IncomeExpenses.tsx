@@ -6,12 +6,14 @@ import SelectFilter from "@/components/common/SelectFilter"
 import DatePicker from "@/components/common/DatePicker"
 import { useFinanceStore } from "@/stores/financeStore"
 import { useShallow } from "zustand/shallow"
-import { generarRangoMensual } from "@/utils/utils"
+import { capitalize, generarRangoMensual } from "@/utils/utils"
+import { ACCOUNT, BALANCE, EXPENSE, INCOME } from "@/lib/const"
+
 
 const grafic = [
-  { dataKey: "Income", stroke: "#10b981" },
-  { dataKey: "Expenses", stroke: "#ef4444" },
-  { dataKey: "Balance", stroke: "#000000" },
+  { dataKey: INCOME, stroke: "#10b981" },
+  { dataKey: EXPENSE, stroke: "#ef4444" },
+  { dataKey: BALANCE, stroke: "#000000" },
 ]
 
 const IncomeExpenses = () => {
@@ -35,13 +37,13 @@ const IncomeExpenses = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
         {/* <SelectFilter type="month" /> */}
         <DatePicker date={date} setDate={setDate} />
-        <SelectFilter type="income" data={incomeCategory} setData={setIncomeCategory} />
-        <SelectFilter type="expenses" data={expenseCategory} setData={setExpenseCategory} />
-        <SelectFilter type="account" data={account} setData={setaccount} />
+        <SelectFilter type={INCOME} data={incomeCategory} setData={setIncomeCategory} />
+        <SelectFilter type={EXPENSE} data={expenseCategory} setData={setExpenseCategory} />
+        <SelectFilter type={ACCOUNT} data={account} setData={setaccount} />
       </div>
       <Card className="w-full overflow-hidden pr-4">
         <CardHeader>
-          <CardTitle className="text-base md:text-lg">Income vs Expenses</CardTitle>
+          <CardTitle className="text-base md:text-lg">Income vs Expense</CardTitle>
           <CardDescription className="text-sm text-gray-500">Last 30 days comparison</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
@@ -67,6 +69,7 @@ const IncomeExpenses = () => {
                     <Line
                       key={index}
                       type="monotone"
+                      name={capitalize(dataKey)}
                       dataKey={dataKey}
                       stroke={stroke}
                       strokeWidth={3}

@@ -13,3 +13,9 @@ export const headersTable:HeadersTable[] = [
   { name: "Account", field: "accountId", sortField: "accountId" },
   { name: "Amount", field: "amount", sortField: "amount" },
 ]
+
+export const BALANCE = "balance"
+export const INCOME = "income"
+export const EXPENSE = "expense"
+export const ACCOUNT = "account"
+export const ALL = "all"

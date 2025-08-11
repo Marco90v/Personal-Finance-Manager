@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -68,12 +66,7 @@ const DEFAULTS: ConfigurationFormValues = {
  *
  * Style matches clean card-based aesthetic similar to modern dashboards.
  */
-export default function Configuration({
-  defaultValues,
-  onSubmit,
-  onResetData,
-  className,
-}: ConfigurationProps) {
+export default function Configuration({ defaultValues, onSubmit, onResetData, className }: ConfigurationProps) {
   const mergedDefaults = { ...DEFAULTS, ...defaultValues }
   // const { toast } = useToast()
   const form = useForm<ConfigurationFormValues>({
@@ -131,7 +124,7 @@ export default function Configuration({
     } catch {
       return "$3,500.00"
     }
-  }, [form.watch("currency")])
+  }, [form])
 
   const isSubmitting = form.formState.isSubmitting
   const hasPasswordChange =
@@ -170,7 +163,7 @@ export default function Configuration({
                 value={form.watch("currency")}
                 onValueChange={(val) => form.setValue("currency", val, { shouldDirty: true, shouldValidate: true })}
               >
-                <SelectTrigger id="currency">
+                <SelectTrigger id="currency" disabled={true}>
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>
                 <SelectContent>
@@ -204,11 +197,11 @@ export default function Configuration({
                 }}
                 className="w-fit rounded-md border bg-background p-1"
               >
-                <ToggleGroupItem value="light" aria-label="Light" className="gap-2">
+                <ToggleGroupItem value="light" aria-label="Light" className="gap-2 cursor-pointer">
                   <Sun className="h-4 w-4" />
                   <span className="hidden sm:inline">Light</span>
                 </ToggleGroupItem>
-                <ToggleGroupItem value="dark" aria-label="Dark" className="gap-2">
+                <ToggleGroupItem value="dark" aria-label="Dark" className="gap-2 cursor-pointer">
                   <Moon className="h-4 w-4" />
                   <span className="hidden sm:inline">Dark</span>
                 </ToggleGroupItem>
@@ -217,7 +210,7 @@ export default function Configuration({
             </div>
           </CardContent>
           <CardFooter className="justify-end">
-            <Button type="submit" className="gap-2" disabled={isSubmitting}>
+            <Button type="submit" className="gap-2 cursor-pointer" disabled={isSubmitting}>
               <Save className="h-4 w-4" />
               Save preferences
             </Button>

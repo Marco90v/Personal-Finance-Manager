@@ -2,7 +2,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Label } from "@/components/ui/label"
 import { accounts, expensesTypes, incomesTypes } from "@/data/mockData"
 
-type Type = "income" | "expenses" | "account"
+type Type = "income" | "expense" | "account"
 
 interface labels {
   items: string[]
@@ -22,7 +22,7 @@ const labels:Record<Type, labels> = {
     title: "Filter by income category",
     selectLabel: "Select by income",
   },
-  expenses : { items: expensesTypes.map(t => t.name),
+  expense : { items: expensesTypes.map(t => t.name),
     title: "Filter by expense category",
     selectLabel: "Select by expense",
   },

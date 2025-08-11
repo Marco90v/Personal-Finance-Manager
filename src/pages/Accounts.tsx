@@ -84,8 +84,6 @@ export default function AccountsManager() {
     removeAccount(accountId)
   }
 
-  // const totalBalance = accounts.reduce((sum, account) => sum + account.balance, 0)
-
   return (
     <div className="space-y-6 mx-4 my-8 xl:mx-auto max-w-[980px]"> 
       {/* Header */}

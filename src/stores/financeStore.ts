@@ -6,6 +6,7 @@ import {
   accounts as cuentasMock,
   transacciones as transaccionesMock,
 } from "@/data/mockData";
+import { EXPENSE, INCOME } from "@/lib/const";
 
 interface FinanceStore {
   accounts: Account[];
@@ -54,10 +55,10 @@ export const useFinanceStore = create<FinanceStore>()(
           transactions: state.transactions.map((t) => {
             if (t.id !== id) return t;
 
-            if (t.type === "income") {
-              return { ...t, ...data, type: "income", recurrence: null } as IncomeTransaction;
+            if (t.type === INCOME) {
+              return { ...t, ...data, type: INCOME, recurrence: null } as IncomeTransaction;
             } else {
-              return { ...t, ...data, type: "expense" } as ExpenseTransaction;
+              return { ...t, ...data, type: EXPENSE } as ExpenseTransaction;
             }
           }),
         })),
@@ -75,14 +76,14 @@ export const useFinanceStore = create<FinanceStore>()(
       getIncomesTotal: () => {
         const { transactions } = get();
         return transactions
-          .filter((t) => t.type === "income")
+          .filter((t) => t.type === INCOME)
           .reduce((total, tx) => total + tx.amount, 0);
       },
 
       getExpensesTotal: () => {
         const { transactions } = get();
         return transactions
-          .filter((t) => t.type === "expense")
+          .filter((t) => t.type === EXPENSE)
           .reduce((total, tx) => total + tx.amount, 0);
       },
 

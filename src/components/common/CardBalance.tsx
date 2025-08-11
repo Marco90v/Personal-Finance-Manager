@@ -3,7 +3,7 @@ import { useFinanceStore } from "@/stores/financeStore"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowDownRight, ArrowUpRight, TrendingDown, TrendingUp } from "lucide-react"
 
-type StatCardType = "incomes" | "expenses" | "balance";
+type StatCardType = "income" | "expense" | "balance";
 
 interface labels {
   title: string
@@ -25,13 +25,13 @@ const arrowIcon = {
 }
 
 const labels:Record<StatCardType, labels> = {
-  incomes : {
+  income : {
     title: "Total Income",
     description: "from last month",
     textColorTitle: "text-green-600",
     arrow: "ArrowUpRight",
   },
-  expenses : {
+  expense : {
     title: "Total Expenses",
     description: "from last month",
     textColorTitle: "text-red-600",
@@ -54,8 +54,8 @@ const CardBalance = ({ type, porcentage }: CardBalanceProps) => {
   })))
 
   const actionsMap: Record<StatCardType, () => number> = {
-    incomes: getIncomesTotal,
-    expenses: getExpensesTotal,
+    income: getIncomesTotal,
+    expense: getExpensesTotal,
     balance: getTotalBalance,
   };
 

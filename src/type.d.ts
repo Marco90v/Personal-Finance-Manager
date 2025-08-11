@@ -23,16 +23,6 @@ type Recurrence = "fixed" | "variable";
 export type SortField = keyof Transaction
 export type SortDirection = "asc" | "desc" | null
 
-// export interface Transaccion {
-//   id: string;
-//   type: TypeTransaccion;
-//   amount: number;
-//   date: string;
-//   origin: string;
-//   accountId: string;
-//   notes?: string;
-// }
-
 export interface SortState {
   field: SortField | null
   direction: SortDirection

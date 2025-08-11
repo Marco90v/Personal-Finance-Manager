@@ -21,7 +21,7 @@ import BodyTableHistory from "@/components/common/BodyTableHistory"
 import { filterTransactionSchema } from "@/schemas/schemaFilterTransaction"
 import { filterChange } from "@/utils/utils"
 import HeadTable from "@/components/common/HeadTable"
-import { headersTable } from "@/lib/const"
+import { ALL, EXPENSE, headersTable, INCOME } from "@/lib/const"
 
 export default function TransactionHistory() {
 
@@ -33,9 +33,9 @@ export default function TransactionHistory() {
   const form = useForm<TransactionFilters>({
     resolver: zodResolver(filterTransactionSchema),
     defaultValues: {
-      type: "all",
-      origin: "all",
-      accountId: "all",
+      type: ALL,
+      origin: ALL,
+      accountId: ALL,
       dateFrom: undefined,
       dateTo: undefined,
     },
@@ -50,7 +50,7 @@ export default function TransactionHistory() {
   const watchedType = form.watch("type")
   const filterAndSortTransactions = filterChange(transactions, handleFilterChange, sortState)
   const availableOrigin =
-    watchedType === "all"
+    watchedType === ALL
       ? [...incomesTypes, ...expensesTypes]
       : { income: incomesTypes, expense: expensesTypes }[watchedType as "income" | "expense"] || []
 
@@ -88,7 +88,7 @@ export default function TransactionHistory() {
                         value={field.value}
                         onValueChange={(value) => {
                           field.onChange(value)
-                          form.setValue("origin", "all")
+                          form.setValue("origin", ALL)
                           setHandleFilterChange({ ...form.getValues(), type: value as TransactionFilters["type"] })
                         }}
                       >
@@ -98,9 +98,9 @@ export default function TransactionHistory() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="all">All Types</SelectItem>
-                          <SelectItem value="income">Income</SelectItem>
-                          <SelectItem value="expense">Expense</SelectItem>
+                          <SelectItem value={ALL}>All Types</SelectItem>
+                          <SelectItem value={INCOME}>Income</SelectItem>
+                          <SelectItem value={EXPENSE}>Expense</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormItem>
@@ -126,7 +126,7 @@ export default function TransactionHistory() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="all">All Categories</SelectItem>
+                          <SelectItem value={ALL}>All Categories</SelectItem>
                           {availableOrigin.map(({id, name}) => (
                             <SelectItem key={id} value={id}>
                               {name}
@@ -157,7 +157,7 @@ export default function TransactionHistory() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="all">All Accounts</SelectItem>
+                          <SelectItem value={ALL}>All Accounts</SelectItem>
                           {accounts.map(({id, name}) => (
                             <SelectItem key={id} value={id}>
                               {name}

@@ -1,3 +1,4 @@
+import { EXPENSE, INCOME } from "@/lib/const";
 import type { SortState, Transaction, TransactionFilters } from "@/type";
 import dayjs from "dayjs";
 
@@ -17,47 +18,46 @@ export function generarRangoMensual(
     const coincideMes = t.date.startsWith(mes);
     const coincideCuenta = accountId === "All" || t.accountId === accountId;
     const coincideIngreso =
-      t.type === "income" && (incomeCategory === "All" || t.origin === incomeCategory);
+      t.type === INCOME && (incomeCategory === "All" || t.origin === incomeCategory);
     const coincideGasto =
-      t.type === "expense" && (expenseCategory === "All" || t.origin === expenseCategory);
+      t.type === EXPENSE && (expenseCategory === "All" || t.origin === expenseCategory);
 
     const coincideCategoria =
-      t.type === "income" ? coincideIngreso : coincideGasto;
+      t.type === INCOME ? coincideIngreso : coincideGasto;
 
     return coincideMes && coincideCuenta && coincideCategoria;
   });
 
   const dataPorDia = diasDelMes.map((date) => {
     const income = transaccionesFiltradas
-      .filter((t) => t.type === "income" && t.date === date)
+      .filter((t) => t.type === INCOME && t.date === date)
       .reduce((sum, t) => sum + t.amount, 0);
 
-    const expenses = transaccionesFiltradas
-      .filter((t) => t.type === "expense" && t.date === date)
+    const expense = transaccionesFiltradas
+      .filter((t) => t.type === EXPENSE && t.date === date)
       .reduce((sum, t) => sum + t.amount, 0);
 
-    return { date, income, expenses };
+    return { date, income, expense };
   });
 
   // Acumulados
   let acumuladoIngresos = 0;
   let acumuladoGastos = 0;
 
-  return dataPorDia.map(({ date, income, expenses }) => {
+  return dataPorDia.map(({ date, income, expense }) => {
     acumuladoIngresos += income;
-    acumuladoGastos += expenses;
+    acumuladoGastos += expense;
     return {
       date,
-      Income: acumuladoIngresos,
-      Expenses: acumuladoGastos,
-      Balance: acumuladoIngresos - acumuladoGastos,
+      income: acumuladoIngresos,
+      expense: acumuladoGastos,
+      balance: acumuladoIngresos - acumuladoGastos,
     };
   });
 }
 
 // Función para formatear número con puntos
 export const formatNumber = (value: number | string) => {
-  // console.log(value)
   if (value === "" || value === null || isNaN(Number(value))) return "";
   // Formato con separador de miles y 2 decimales
   return new Intl.NumberFormat("es-ES", {
@@ -98,7 +98,6 @@ export function capitalize(str: string): string {
 }
 
 export const filterChange = (transactions: Transaction[], filters: TransactionFilters, sortState:SortState) => {
-  // console.log(filters)
   let filtered = transactions
 
   // Filter by type
