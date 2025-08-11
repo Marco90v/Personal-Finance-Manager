@@ -33,7 +33,7 @@ export default function AddExpenseForm() {
   const form = useForm<FormExpenseType>({
     resolver: zodResolver(formSchemaExpense),
     defaultValues: {
-      amount: undefined,
+      amountId: undefined,
       date: new Date(),
       notes: "",
       recurrence: "",
@@ -190,7 +190,7 @@ export default function AddExpenseForm() {
 
               <FormField
                 control={form.control}
-                name="account"
+                name="accountId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Associated Account</FormLabel>

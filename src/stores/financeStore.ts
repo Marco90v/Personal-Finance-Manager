@@ -47,8 +47,15 @@ export const useFinanceStore = create<FinanceStore>()(
           // transacciones: state.transacciones.filter((t) => t.accountId !== id),
         })),
 
-      addTransaccion: (tx) =>
-        set((state) => ({ transactions: [...state.transactions, tx] })),
+      addTransaccion: (tx) => set((state) => ({
+        transactions: [...state.transactions, tx],
+        accounts: state.accounts.map(account=>{
+          if(tx.accountId === account.id){
+            return {...account, balance: tx.type === INCOME ? account.balance + tx.amount : account.balance - tx.amount}
+          }
+          return account
+        })
+      })),
 
       updateTransaccion: (id, data) =>
         set((state) => ({
@@ -106,7 +113,7 @@ export const useFinanceStore = create<FinanceStore>()(
       name: "finance-store", // nombre clave en localStorage
       storage: createJSONStorage(() => localStorage), // usa localStorage
       partialize: (state) => ({
-        cuentas: state.accounts,
+        accounts: state.accounts,
         transactions: state.transactions,
       }), // solo persiste datos, no funciones
     }

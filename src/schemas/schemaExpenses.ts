@@ -13,7 +13,7 @@ export const formSchemaExpense = z.object({
   category: z.string().min(1, {
     message: "Please select a category.",
   }),
-  account: z.string().min(1, {
+  accountId: z.string().min(1, {
     message: "Please select an account.",
   }),
   notes: z.string().optional(),
