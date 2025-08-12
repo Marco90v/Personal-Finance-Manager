@@ -1,4 +1,3 @@
-// src/store/financeStore.ts
 import type { Account, ExpenseTransaction, IncomeTransaction, Transaction } from "@/type";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -7,22 +6,26 @@ import {
   transacciones as transaccionesMock,
 } from "@/data/mockData";
 import { EXPENSE, INCOME } from "@/lib/const";
+import dayjs from "dayjs";
 
 interface FinanceStore {
   accounts: Account[];
   transactions: Transaction[];
+  filterDate: string | undefined;
   addAccount: (cuenta: Account) => void;
   updateAccount: (id: string, data: Partial<Account>) => void;
   removeAccount: (id: string) => void;
   addTransaccion: (tx: Transaction) => void;
-  updateTransaccion: (id: string, data: Partial<Transaction>) => void;
+  // updateTransaccion: (id: string, data: Partial<Transaction>) => void;
   removeTransaccion: (id: string) => void;
   getTotalBalance: () => number;
   getIncomesTotal: () => number;
   getExpensesTotal: () => number;
-  getTransaccionesPorCuenta: (cuentaId: string) => Transaction[];
+  // getTransaccionesPorCuenta: (cuentaId: string) => Transaction[];
   cargarDatosDesdeFirebase?: () => Promise<void>;
   getNameAccount: (id: string) => string;
+
+  addFilterDate: (date: Date | undefined) => void;
 }
 
 export const useFinanceStore = create<FinanceStore>()(
@@ -30,6 +33,7 @@ export const useFinanceStore = create<FinanceStore>()(
     (set, get) => ({
       accounts: cuentasMock,
       transactions: transaccionesMock,
+      filterDate: undefined,
 
       addAccount: (account) =>
         set((state) => ({ accounts: [...state.accounts, account] })),
@@ -57,18 +61,18 @@ export const useFinanceStore = create<FinanceStore>()(
         })
       })),
 
-      updateTransaccion: (id, data) =>
-        set((state) => ({
-          transactions: state.transactions.map((t) => {
-            if (t.id !== id) return t;
+      // updateTransaccion: (id, data) =>
+      //   set((state) => ({
+      //     transactions: state.transactions.map((t) => {
+      //       if (t.id !== id) return t;
 
-            if (t.type === INCOME) {
-              return { ...t, ...data, type: INCOME, recurrence: null } as IncomeTransaction;
-            } else {
-              return { ...t, ...data, type: EXPENSE } as ExpenseTransaction;
-            }
-          }),
-        })),
+      //       if (t.type === INCOME) {
+      //         return { ...t, ...data, type: INCOME, recurrence: null } as IncomeTransaction;
+      //       } else {
+      //         return { ...t, ...data, type: EXPENSE } as ExpenseTransaction;
+      //       }
+      //     }),
+      //   })),
 
       removeTransaccion: (id) =>
         set((state) => ({
@@ -94,10 +98,10 @@ export const useFinanceStore = create<FinanceStore>()(
           .reduce((total, tx) => total + tx.amount, 0);
       },
 
-      getTransaccionesPorCuenta: (cuentaId) => {
-        const { transactions } = get();
-        return transactions.filter((t) => t.accountId === cuentaId);
-      },
+      // getTransaccionesPorCuenta: (cuentaId) => {
+      //   const { transactions } = get();
+      //   return transactions.filter((t) => t.accountId === cuentaId);
+      // },
 
       cargarDatosDesdeFirebase: async () => {
         // TODO: Implementar conexión con Firebase y actualizar estado
@@ -107,6 +111,8 @@ export const useFinanceStore = create<FinanceStore>()(
         const { accounts } = get();
         return accounts.find((a) => a.id === id)?.name ?? "Unknown Account";
       },
+
+      addFilterDate: (date) => set(() => ({ filterDate: dayjs(date).format("YYYY-MM-DD") })),
 
     }),
     {

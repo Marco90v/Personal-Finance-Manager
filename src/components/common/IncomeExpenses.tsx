@@ -8,6 +8,7 @@ import { useFinanceStore } from "@/stores/financeStore"
 import { useShallow } from "zustand/shallow"
 import { capitalize, generarRangoMensual } from "@/utils/utils"
 import { ACCOUNT, BALANCE, EXPENSE, INCOME } from "@/lib/const"
+import Filters from "../Filters"
 
 
 const grafic = [
@@ -34,17 +35,22 @@ const IncomeExpenses = () => {
   return (
     <>
       {/* <div className="mx-auto flex flex-col gap-5 md:flex-row md:gap-3"> */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
         {/* <SelectFilter type="month" /> */}
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
         <DatePicker date={date} setDate={setDate} />
         <SelectFilter type={INCOME} data={incomeCategory} setData={setIncomeCategory} />
         <SelectFilter type={EXPENSE} data={expenseCategory} setData={setExpenseCategory} />
         <SelectFilter type={ACCOUNT} data={account} setData={setaccount} />
-      </div>
+      </div> */}
       <Card className="w-full overflow-hidden pr-4">
-        <CardHeader>
-          <CardTitle className="text-base md:text-lg">Income vs Expense</CardTitle>
-          <CardDescription className="text-sm text-gray-500">Last 30 days comparison</CardDescription>
+        <CardHeader className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 items-center">
+          <div>
+            <CardTitle className="text-base md:text-lg">Income vs Expense</CardTitle>
+            <CardDescription className="text-sm text-gray-500">Last 30 days comparison</CardDescription>
+          </div>
+          <div>
+            <Filters />
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           <div className="w-full h-[300px] sm:h-[400px]">
