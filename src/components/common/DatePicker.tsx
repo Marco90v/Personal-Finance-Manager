@@ -8,9 +8,9 @@ import dayjs from "dayjs"
 // import dayjs from "dayjs"
 
 interface props {
-  date: string | undefined
+  date?: string | undefined
   // setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
-  setDate: (date: Date | undefined) => void
+  setDate?: (date: Date | undefined) => void | undefined
 }
 
 function Calendar22({date, setDate}:props) {
@@ -45,7 +45,7 @@ function Calendar22({date, setDate}:props) {
             onSelect={(d) => {
               // const dateFormat = dayjs(date).format("YYYY-MM-DD")
               // console.log(dayjs(d).format("YYYY-MM-DD"))
-              setDate(d)
+              if(setDate) setDate(d)
               setOpen(false)
             }}
           />
