@@ -11,7 +11,7 @@ import Filters from "../Filters"
 const grafic = [
   { dataKey: INCOME, stroke: "#10b981" },
   { dataKey: EXPENSE, stroke: "#ef4444" },
-  { dataKey: BALANCE, stroke: "#000000" },
+  { dataKey: BALANCE, stroke: "#1c398e" },
 ]
 
 const IncomeExpenses = () => {

@@ -26,13 +26,13 @@ const arrowIcon = {
 
 const labels:Record<StatCardType, labels> = {
   income : {
-    title: "Total Income",
+    title: "Monthly Income",
     description: "from last month",
     textColorTitle: "text-green-600",
     arrow: "ArrowUpRight",
   },
   expense : {
-    title: "Total Expenses",
+    title: "Monthly Expense",
     description: "from last month",
     textColorTitle: "text-red-600",
     arrow: "TrendingDown",
@@ -40,7 +40,7 @@ const labels:Record<StatCardType, labels> = {
   balance : {
     title: "Monthly Balance",
     description: "from last month",
-    textColorTitle: "text-gray-900",
+    textColorTitle: "text-blue-900",
     arrow: "TrendingUp",
   }
 }
