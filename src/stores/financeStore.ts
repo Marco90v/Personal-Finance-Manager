@@ -1,4 +1,4 @@
-import type { Account, ExpenseTransaction, IncomeTransaction, Transaction } from "@/type";
+import type { Account, ExpenseTransaction, FilterTransByMonth, IncomeTransaction, Transaction } from "@/type";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
@@ -7,6 +7,7 @@ import {
 } from "@/data/mockData";
 import { EXPENSE, INCOME } from "@/lib/const";
 import dayjs from "dayjs";
+// import { generarRangoMensual } from "@/utils/utils";
 
 interface FinanceStore {
   accounts: Account[];
@@ -26,6 +27,10 @@ interface FinanceStore {
   getNameAccount: (id: string) => string;
 
   addFilterDate: (date: Date | undefined) => void;
+
+  getTotalByMonthBlance: (date:string | undefined) => number;
+  getIncomeByMonthBlance: (date:string | undefined) => number;
+  getExpenseByMonthBlance: (date:string | undefined) => number;
 }
 
 export const useFinanceStore = create<FinanceStore>()(
@@ -113,6 +118,23 @@ export const useFinanceStore = create<FinanceStore>()(
       },
 
       addFilterDate: (date) => set(() => ({ filterDate: dayjs(date).format("YYYY-MM-DD") })),
+
+      getTotalByMonthBlance: (date) => {
+        const { getIncomeByMonthBlance, getExpenseByMonthBlance } = get();
+        return getIncomeByMonthBlance(date) - getExpenseByMonthBlance(date)
+      },
+
+      getIncomeByMonthBlance: (date) => {
+        const { transactions } = get();
+        const month = dayjs(date).format("YYYY-MM")
+        return transactions.filter((t) => t.date.startsWith(month) && t.type === INCOME).reduce((total, tx) => total + tx.amount, 0)
+      },
+
+      getExpenseByMonthBlance: (date) => {
+        const { transactions } = get();
+        const month = dayjs(date).format("YYYY-MM")
+        return transactions.filter((t) => t.date.startsWith(month) && t.type === EXPENSE).reduce((total, tx) => total + tx.amount, 0)
+      },
 
     }),
     {

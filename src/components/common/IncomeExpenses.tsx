@@ -1,13 +1,10 @@
-import { useState } from "react"
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts" 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartLegend, ChartTooltip } from "@/components/ui/chart"
-import SelectFilter from "@/components/common/SelectFilter"
-import DatePicker from "@/components/common/DatePicker"
 import { useFinanceStore } from "@/stores/financeStore"
 import { useShallow } from "zustand/shallow"
 import { capitalize, generarRangoMensual } from "@/utils/utils"
-import { ACCOUNT, BALANCE, EXPENSE, INCOME } from "@/lib/const"
+import { BALANCE, EXPENSE, INCOME } from "@/lib/const"
 import Filters from "../Filters"
 
 
@@ -19,18 +16,14 @@ const grafic = [
 
 const IncomeExpenses = () => {
 
-  const {transactions} =  useFinanceStore(useShallow(s => ({
+  const {transactions, filterDate} =  useFinanceStore(useShallow(s => ({
     transactions: s.transactions,
+    filterDate: s.filterDate,
   })))
 
-  const [date, setDate] = useState<Date | undefined>(undefined)
-  const [incomeCategory, setIncomeCategory] = useState<string | undefined>(undefined)
-  const [expenseCategory, setExpenseCategory] = useState<string | undefined>(undefined)
-  const [account, setaccount] = useState<string | undefined>(undefined) 
-
-  const dataMensual = date ? 
-    generarRangoMensual(transactions, date?.toISOString().slice(0, 7), incomeCategory, expenseCategory, account) : 
-    generarRangoMensual(transactions, undefined, incomeCategory, expenseCategory, account)
+  const dataMensual = filterDate ? 
+    generarRangoMensual(transactions, filterDate?.slice(0, 7)) : 
+    generarRangoMensual(transactions)
 
   return (
     <>

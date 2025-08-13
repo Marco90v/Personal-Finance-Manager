@@ -47,19 +47,20 @@ const labels:Record<StatCardType, labels> = {
 
 const CardBalance = ({ type, porcentage }: CardBalanceProps) => {
 
-  const {getTotalBalance, getIncomesTotal, getExpensesTotal} =  useFinanceStore(useShallow(s => ({
-    getTotalBalance: s.getTotalBalance,
-    getIncomesTotal: s.getIncomesTotal,
-    getExpensesTotal: s.getExpensesTotal,
+  const { filterDate, getTotalByMonthBlance, getIncomeByMonthBlance, getExpenseByMonthBlance } =  useFinanceStore(useShallow(s => ({
+    filterDate: s.filterDate,
+    getTotalByMonthBlance: s.getTotalByMonthBlance,
+    getIncomeByMonthBlance: s.getIncomeByMonthBlance,
+    getExpenseByMonthBlance: s.getExpenseByMonthBlance,
   })))
 
-  const actionsMap: Record<StatCardType, () => number> = {
-    income: getIncomesTotal,
-    expense: getExpensesTotal,
-    balance: getTotalBalance,
+  const actionsMap: Record<StatCardType, (date:string | undefined) => number> = {
+    income: getIncomeByMonthBlance,
+    expense: getExpenseByMonthBlance,
+    balance: getTotalByMonthBlance,
   };
 
-  const value = actionsMap[type]();
+  const value = actionsMap[type](filterDate);
 
   return (
     <Card className="md:col-span-1">

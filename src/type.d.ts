@@ -8,6 +8,13 @@ export type FormExpenseType = z.infer<typeof formSchemaExpense>
 export type FormAccountType = z.infer<typeof formSchemaAccount>
 export type TransactionFilters = z.infer<typeof filterTransactionSchema>
 
+export interface FilterTransByMonth {
+  date: string;
+  income: number;
+  expense: number;
+  balance: number;
+}
+
 export interface Account {
   id: string;
   name: string;
