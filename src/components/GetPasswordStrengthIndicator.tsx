@@ -5,7 +5,7 @@ interface Props {
 }
 
 const GetPasswordStrengthIndicator = ({password}: Props) => {
-  if (password === "" || password === null) return null
+  if (password === "" || password === undefined) return null
 
   const requirements = [
     { test: password.length >= 8, label: "At least 8 characters" },
