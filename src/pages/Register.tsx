@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Eye, EyeOff, Mail, Check, X } from "lucide-react"
+import { Eye, EyeOff, Mail } from "lucide-react"
 import { useAuthStore } from "@/stores/authStore"
 import { registerSchema } from "@/schemas/schemaAuth"
 import type { RegisterFormData } from "@/type"
@@ -14,6 +13,7 @@ import { useNavigate } from "react-router"
 import { toast } from "sonner"
 import { useShallow } from "zustand/shallow"
 import GetPasswordStrengthIndicator from "@/components/GetPasswordStrengthIndicator"
+import SeparatorLoginRegister from "@/components/common/SeparatorLoginRegister"
 
 
 export default function RegisterForm() {
@@ -203,14 +203,7 @@ export default function RegisterForm() {
             </Button>
           </form>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <Separator className="w-full" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
-            </div>
-          </div>
+          <SeparatorLoginRegister />
 
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" onClick={() => handleSocialLogin("google")} disabled={isLoading} className="w-full">
