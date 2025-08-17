@@ -13,6 +13,7 @@ import type { RegisterFormData } from "@/type"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
 import { useShallow } from "zustand/shallow"
+import GetPasswordStrengthIndicator from "@/components/GetPasswordStrengthIndicator"
 
 
 export default function RegisterForm() {
@@ -80,30 +81,30 @@ export default function RegisterForm() {
     }
   }
 
-  const getPasswordStrengthIndicator = (password: string) => {
-    const requirements = [
-      { test: password.length >= 8, label: "At least 8 characters" },
-      { test: /[A-Z]/.test(password), label: "One uppercase letter" },
-      { test: /[a-z]/.test(password), label: "One lowercase letter" },
-      { test: /[0-9]/.test(password), label: "One number" },
-      { test: /[^A-Za-z0-9]/.test(password), label: "One special character" },
-    ]
+  // const getPasswordStrengthIndicator = (password: string) => {
+  //   const requirements = [
+  //     { test: password.length >= 8, label: "At least 8 characters" },
+  //     { test: /[A-Z]/.test(password), label: "One uppercase letter" },
+  //     { test: /[a-z]/.test(password), label: "One lowercase letter" },
+  //     { test: /[0-9]/.test(password), label: "One number" },
+  //     { test: /[^A-Za-z0-9]/.test(password), label: "One special character" },
+  //   ]
 
-    return (
-      <div className="space-y-1 mt-2">
-        {requirements.map((req, index) => (
-          <div key={index} className="flex items-center text-xs">
-            {req.test ? (
-              <Check className="h-3 w-3 text-green-500 mr-2" />
-            ) : (
-              <X className="h-3 w-3 text-muted-foreground mr-2" />
-            )}
-            <span className={req.test ? "text-green-600" : "text-muted-foreground"}>{req.label}</span>
-          </div>
-        ))}
-      </div>
-    )
-  }
+  //   return (
+  //     <div className="space-y-1 mt-2">
+  //       {requirements.map((req, index) => (
+  //         <div key={index} className="flex items-center text-xs">
+  //           {req.test ? (
+  //             <Check className="h-3 w-3 text-green-500 mr-2" />
+  //           ) : (
+  //             <X className="h-3 w-3 text-muted-foreground mr-2" />
+  //           )}
+  //           <span className={req.test ? "text-green-600" : "text-muted-foreground"}>{req.label}</span>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -169,7 +170,8 @@ export default function RegisterForm() {
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
               </div>
-              {password && getPasswordStrengthIndicator(password)}
+              {/* {password && getPasswordStrengthIndicator(password)} */}
+              <GetPasswordStrengthIndicator password={password} />
               {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
             </div>
 
