@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard"
+import { Toaster } from "@/components/ui/sonner";
 // import Home from "@/pages/Home";
 // import Income from "@/pages/Income";
 // import Expenses from "@/pages/Expenses";
@@ -60,6 +61,7 @@ function App() {
             </Route>
             
           </Routes>
+          <Toaster />
         </BrowserRouter>
       {/* </Suspense> */}
     </>

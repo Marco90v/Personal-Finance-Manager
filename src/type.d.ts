@@ -2,6 +2,10 @@ import type { formSchemaAccount } from "@/schemas/schemaAccount";
 import type { formSchemaExpense } from "@/schemas/schemaExpenses";
 import type { filterTransactionSchema } from "@/schemas/schemaFilterTransaction";
 import type { formSchemaIncome } from "@/schemas/schemaIncomes";
+import type { loginSchema, registerSchema } from "@/schemas/schemaAuth";
+
+export type LoginFormData = z.infer<typeof loginSchema>
+export type RegisterFormData = z.infer<typeof registerSchema>
 
 export type FormIncomeType = z.infer<typeof formSchemaIncome>
 export type FormExpenseType = z.infer<typeof formSchemaExpense>
