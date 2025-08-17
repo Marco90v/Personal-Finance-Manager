@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -8,35 +6,30 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-// import { useToast } from "@/hooks/use-toast"
-// import { useAuthStore } from "@/lib/auth-store"
-// import { registerSchema, type RegisterFormData } from "@/lib/auth-schemas"
 import { Eye, EyeOff, Mail, Check, X } from "lucide-react"
 import { useAuthStore } from "@/stores/authStore"
 import { registerSchema } from "@/schemas/schemaAuth"
 import type { RegisterFormData } from "@/type"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
+import { useShallow } from "zustand/shallow"
 
-// interface RegisterFormProps {
-//   onSwitchToLogin: () => void
-// }
 
 export default function RegisterForm() {
 
   const navigate = useNavigate();
 
+  const { register: registerUser, socialLogin, isLoading } = useAuthStore(useShallow(s=>({
+    register: s.register,
+    registerUser: s.register,
+    socialLogin: s.socialLogin,
+    isLoading: s.isLoading,
+  })))
+
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const { register: registerUser, socialLogin, isLoading } = useAuthStore()
-  // const { toast } = useToast()
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<RegisterFormData>({
+  
+  const { register, handleSubmit, watch, formState: { errors }, reset} = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   })
 
@@ -44,6 +37,7 @@ export default function RegisterForm() {
 
   const onSwitchToLogin = () => {
     navigate("/login")
+    reset()
   }
 
   const onSubmit = async (data: RegisterFormData) => {

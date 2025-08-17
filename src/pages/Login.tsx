@@ -6,27 +6,25 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-// import { useToast } from "@/hooks/use-toast"
-// import { useAuthStore } from "@/lib/auth-store"
-// import { loginSchema, type LoginFormData } from "@/lib/auth-schemas"
 import { Eye, EyeOff, Mail } from "lucide-react"
 import { loginSchema } from "@/schemas/schemaAuth"
 import type { LoginFormData } from "@/type"
 import { useAuthStore } from "@/stores/authStore"
 import { useNavigate } from "react-router"
 import { toast } from "sonner"
-
-// interface LoginFormProps {
-//   onSwitchToRegister: () => void
-// }
+import { useShallow } from "zustand/shallow"
 
 export default function LoginForm() {
 
   const navigate = useNavigate();
 
+  const { login, socialLogin, isLoading } = useAuthStore(useShallow(s=>({
+    login: s.login,
+    socialLogin: s.socialLogin,
+    isLoading: s.isLoading,
+  })))
+
   const [showPassword, setShowPassword] = useState(false)
-  const { login, socialLogin, isLoading } = useAuthStore()
-  // const { toast } = useToast()
 
   const { register, handleSubmit, formState: { errors }, reset} = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
