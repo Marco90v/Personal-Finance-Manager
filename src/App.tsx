@@ -9,6 +9,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard"
 import { Toaster } from "@/components/ui/sonner";
+import LandingPage from "./pages/LandingPage";
 // import Home from "@/pages/Home";
 // import Income from "@/pages/Income";
 // import Expenses from "@/pages/Expenses";
@@ -44,7 +45,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<ValidatedRoute type="public" />}>
-              <Route path="/" element={<div>Landing Page</div>} />
+              <Route path="/" element={<LandingPage />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
             </Route>
