@@ -140,7 +140,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
         <Button
           type="button"
           variant="outline"
-          className="gap-2"
+          className="gap-2 cursor-pointer"
           onClick={() => form.reset(mergedDefaults)}
         >
           <RefreshCw className="h-4 w-4" />
@@ -163,7 +163,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
                 value={form.watch("currency")}
                 onValueChange={(val) => form.setValue("currency", val, { shouldDirty: true, shouldValidate: true })}
               >
-                <SelectTrigger id="currency" disabled={true}>
+                <SelectTrigger id="currency" disabled={true} className="bg-white border-border">
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>
                 <SelectContent>
@@ -228,6 +228,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
               <Label htmlFor="currentPassword">Current password</Label>
               <div className="relative">
                 <Input
+                  className="bg-white border-border"
                   id="currentPassword"
                   type={showCurrent ? "text" : "password"}
                   placeholder="••••••••"
@@ -251,6 +252,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
               <Label htmlFor="newPassword">New password</Label>
               <div className="relative">
                 <Input
+                  className="bg-white border-border"
                   id="newPassword"
                   type={showNew ? "text" : "password"}
                   placeholder="At least 8 characters"
@@ -277,6 +279,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
               <Label htmlFor="confirmPassword">Confirm new password</Label>
               <div className="relative">
                 <Input
+                  className="bg-white border-border"
                   id="confirmPassword"
                   type={showConfirm ? "text" : "password"}
                   placeholder="Repeat new password"
@@ -303,7 +306,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
             <p className={cn("text-xs text-muted-foreground", !hasPasswordChange && "opacity-70")}>
               Tip: Use a strong passphrase with numbers and symbols.
             </p>
-            <Button type="submit" className="gap-2" disabled={isSubmitting || !hasPasswordChange}>
+            <Button type="submit" className="gap-2 cursor-pointer" disabled={isSubmitting || !hasPasswordChange}>
               <ShieldCheck className="h-4 w-4" />
               Update password
             </Button>
@@ -324,7 +327,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
           <CardFooter className="justify-end">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button" variant="destructive" className="gap-2">
+                <Button type="button" variant="destructive" className="gap-2 cursor-pointer">
                   <RefreshCw className="h-4 w-4" />
                   Reset data
                 </Button>

@@ -103,13 +103,11 @@ const LandingPage = () => {
     </header>
       <main>
 
-
-
         <section className="relative overflow-hidden bg-gradient-to-br from-secondary via-background to-muted py-20 lg:py-32">
           {/* Background decoration */}
           <div className="absolute inset-0 bg-[url('./assets/abstract-financial-growth.png')] bg-cover bg-center opacity-5" />
 
-          <div className="container relative">
+          <div className="container relative m-auto px-4">
             <div className="mx-auto max-w-4xl text-center">
               <div className="mb-6 inline-flex items-center rounded-full bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
                 <TrendingUp className="mr-2 h-4 w-4" />
@@ -163,7 +161,7 @@ const LandingPage = () => {
 
 
          <section className="py-20 lg:py-32">
-          <div className="container">
+          <div className="container m-auto px-4">
             <div className="mx-auto max-w-2xl text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 Everything you need to manage your money
@@ -194,7 +192,7 @@ const LandingPage = () => {
 
 
         <section className="bg-muted py-20 lg:py-32">
-          <div className="container">
+          <div className="container m-auto px-4">
             <div className="mx-auto max-w-2xl text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Loved by thousands of users</h2>
               <p className="mt-4 text-lg text-muted-foreground">
@@ -233,7 +231,7 @@ const LandingPage = () => {
 
         
         <section className="bg-primary py-20 lg:py-32">
-          <div className="container">
+          <div className="container m-auto px-4">
             <div className="mx-auto max-w-4xl text-center">
               <div className="mb-6 inline-flex items-center rounded-full bg-primary-foreground/10 px-4 py-2 text-sm font-medium text-primary-foreground">
                 <Sparkles className="mr-2 h-4 w-4" />
@@ -274,8 +272,8 @@ const LandingPage = () => {
       </main>
       
       <footer className="border-t bg-muted">
-        <div className="container py-12">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="container py-12 m-auto px-4">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-center md:text-left">
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Wallet className="h-6 w-6 text-primary" />

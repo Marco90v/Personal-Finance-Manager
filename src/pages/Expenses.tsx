@@ -81,7 +81,7 @@ export default function AddExpenseForm() {
                             type="text"
                             step="0,01"
                             placeholder="0,00"
-                            className="pl-8"
+                            className="pl-8 bg-white border-border"
                             value={formatNumber(field.value ?? "")}
                             onChange={(e) =>{
                               const start = e.target.selectionStart ?? 0;
@@ -144,7 +144,7 @@ export default function AddExpenseForm() {
                       <FormLabel>Recurrence</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full bg-white border-border">
                             <SelectValue placeholder="Select expense type" />
                           </SelectTrigger>
                         </FormControl>
@@ -168,7 +168,7 @@ export default function AddExpenseForm() {
                       <FormLabel>Category</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full bg-white border-border">
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                         </FormControl>
@@ -196,7 +196,7 @@ export default function AddExpenseForm() {
                     <FormLabel>Associated Account</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                       <FormControl>
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full bg-white border-border">
                           <SelectValue placeholder="Select account" />
                         </SelectTrigger>
                       </FormControl>
@@ -224,7 +224,7 @@ export default function AddExpenseForm() {
                     <FormControl>
                       <Textarea
                         placeholder="Add any additional notes about this expense..."
-                        className="min-h-[100px]"
+                        className="min-h-[100px] bg-white border-border"
                         {...field}
                       />
                     </FormControl>

@@ -93,7 +93,7 @@ export default function TransactionHistory() {
                         }}
                       >
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full bg-white border-border">
                             <SelectValue placeholder="Select type" />
                           </SelectTrigger>
                         </FormControl>
@@ -121,7 +121,7 @@ export default function TransactionHistory() {
                         }}
                       >
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full bg-white border-border">
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                         </FormControl>
@@ -152,7 +152,7 @@ export default function TransactionHistory() {
                         }}
                       >
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full bg-white border-border">
                             <SelectValue placeholder="Select account" />
                           </SelectTrigger>
                         </FormControl>

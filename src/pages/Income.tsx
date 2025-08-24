@@ -152,7 +152,7 @@ function AddIncomeForm() {
                         }}
                       >
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full bg-white border-border">
                             <SelectValue placeholder="Select income source" />
                           </SelectTrigger>
                         </FormControl>
@@ -184,7 +184,7 @@ function AddIncomeForm() {
                     <FormLabel>Associated Account</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                       <FormControl>
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full bg-white border-border">
                           <SelectValue placeholder="Select account" />
                         </SelectTrigger>
                       </FormControl>
@@ -211,7 +211,7 @@ function AddIncomeForm() {
                       <Textarea
                         {...field}
                         placeholder="Add any additional notes about this income..."
-                        className="min-h-[80px] resize-none"
+                        className="min-h-[80px] resize-none bg-white border-border"
                       />
                     </FormControl>
                     <FormMessage />
