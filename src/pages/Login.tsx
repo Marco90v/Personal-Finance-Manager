@@ -66,7 +66,7 @@ export default function LoginForm() {
                 placeholder="Enter your email"
                 {...register("email")}
                 // className={errors.email ? "border-destructive" : ""}
-                className={`bg-white ${errors.email ? "border-destructive" : ""}`}
+                className={`bg-white border-border ${errors.email ? "border-destructive" : ""}`}
               />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
@@ -80,7 +80,7 @@ export default function LoginForm() {
                   placeholder="Enter your password"
                   {...register("password")}
                   // className={errors.password ? "border-destructive pr-10" : "pr-10"}
-                  className={`bg-white ${errors.password ? "border-destructive pr-10" : "pr-10"}`}
+                  className={`bg-white border-border ${errors.password ? "border-destructive pr-10" : "pr-10"}`}
                 />
                 <Button
                   type="button"

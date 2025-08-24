@@ -76,7 +76,8 @@ export default function RegisterForm() {
                   id="firstName"
                   placeholder="John"
                   {...register("firstName")}
-                  className={errors.firstName ? "border-destructive" : ""}
+                  // className={errors.firstName ? "border-destructive" : ""}
+                  className={`bg-white border-border ${errors.lastName ? "border-destructive" : ""}`}
                 />
                 {errors.firstName && <p className="text-sm text-destructive">{errors.firstName.message}</p>}
               </div>
@@ -86,7 +87,8 @@ export default function RegisterForm() {
                   id="lastName"
                   placeholder="Doe"
                   {...register("lastName")}
-                  className={errors.lastName ? "border-destructive" : ""}
+                  // className={errors.lastName ? "border-destructive" : ""}
+                  className={`bg-white border-border ${errors.lastName ? "border-destructive" : ""}`}
                 />
                 {errors.lastName && <p className="text-sm text-destructive">{errors.lastName.message}</p>}
               </div>
@@ -99,7 +101,8 @@ export default function RegisterForm() {
                 type="email"
                 placeholder="john@example.com"
                 {...register("email")}
-                className={errors.email ? "border-destructive" : ""}
+                // className={errors.email ? "border-destructive" : ""}
+                className={`bg-white border-border ${errors.lastName ? "border-destructive" : ""}`}
               />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
@@ -112,7 +115,8 @@ export default function RegisterForm() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
                   {...register("password")}
-                  className={errors.password ? "border-destructive pr-10" : "pr-10"}
+                  // className={errors.password ? "border-destructive pr-10" : "pr-10"}
+                  className={`bg-white border-border ${errors.password ? "border-destructive pr-10" : "pr-10"}`}
                 />
                 <Button
                   type="button"
@@ -137,7 +141,8 @@ export default function RegisterForm() {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
                   {...register("confirmPassword")}
-                  className={errors.confirmPassword ? "border-destructive pr-10" : "pr-10"}
+                  // className={errors.confirmPassword ? "border-destructive pr-10" : "pr-10"}
+                  className={`bg-white border-border ${errors.confirmPassword ? "border-destructive pr-10" : "pr-10"}`}
                 />
                 <Button
                   type="button"
