@@ -1,6 +1,6 @@
-// import Budgets from "@/components/common/Budgets"
-// import Goals from "@/components/common/Goals"
-// import Spending from "@/components/common/Spending"
+import Budgets from "@/components/common/Budgets"
+import Goals from "@/components/common/Goals"
+import Spending from "@/components/common/Spending"
 import CardBalance from "@/components/common/CardBalance"
 import IncomeExpenses from "@/components/common/IncomeExpenses"
 import TotalBalance from "@/components/TotalBalance"
@@ -18,9 +18,9 @@ const Home = () => {
       <div className="p-6 mx-auto max-w-[1024px] flex flex-col gap-4"> 
         <IncomeExpenses />
       </div>
-      {/* <Budgets /> */}
-      {/* <Goals /> */}
-      {/* <Spending /> */}
+      <Budgets />
+      <Goals />
+      <Spending />
     </>
   )
 }

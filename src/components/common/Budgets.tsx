@@ -30,8 +30,8 @@ const budgets = [
   {
     category: "Shopping",
     allocated: 800,
-    spent: 600,
-    remaining: 200,
+    spent: 6000,
+    remaining: -200,
     daysLeft: 8,
     color: "#10b981",
   },
@@ -76,11 +76,12 @@ const Budgets = () => {
                 <Progress
                   value={Math.min(percentage, 100)}
                   className="h-2"
-                  style={
-                    {
-                      "--progress-background": isOverBudget ? "#ef4444" : budget.color,
-                    } as React.CSSProperties
-                  }
+                  // style={
+                  //   {
+                  //     "--progress-background": isOverBudget ? "#ef4444" : budget.color,
+                  //   } as React.CSSProperties
+                  // }
+                  indicatorColor={budget.color}
                 />
                 <div className="flex justify-between text-xs">
                   <span className={`${budget.remaining > 0 ? "text-green-600" : "text-red-600"}`}>

@@ -128,8 +128,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Updated color tokens to match personal finance design brief */
 :root {
-  /* Updated color tokens to match personal finance design brief */
   --background: oklch(1 0 0);
   --foreground: oklch(0.25 0 0);
   --card: oklch(0.99 0.01 142);
