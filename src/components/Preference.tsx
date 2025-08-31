@@ -27,9 +27,7 @@ const DEFAULTS: PreferenceFormValues = {
 
 const Preference = () => {
 
-  const { theme, currency, setPreference } = usePreference(useShallow((s)=>({
-    theme: s.theme,
-    currency: s.currency,
+  const { setPreference } = usePreference(useShallow((s)=>({
     setPreference: s.setPreference
   })));
 

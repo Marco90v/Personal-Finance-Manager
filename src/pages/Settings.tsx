@@ -2,15 +2,15 @@ import * as React from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Sun, Moon, Eye, EyeOff, RefreshCw, ShieldCheck, Save } from 'lucide-react'
+import { Eye, EyeOff, RefreshCw, ShieldCheck } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+// import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 // import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
@@ -150,10 +150,10 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
         </Button>
       </header>
 
-        {/* Preferences */}
-        <Preference />
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      {/* Preferences */}
+      <Preference />
 
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         {/* Password */}
         <Card className="border-muted-foreground/10">
           <CardHeader>
