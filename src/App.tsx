@@ -10,6 +10,7 @@ import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard"
 import { Toaster } from "@/components/ui/sonner";
 import LandingPage from "./pages/LandingPage";
+import Themes from "./layouts/Themes";
 // import Home from "@/pages/Home";
 // import Income from "@/pages/Income";
 // import Expenses from "@/pages/Expenses";
@@ -42,6 +43,7 @@ function App() {
       <Goals /> */}
       {/* <Dashboard /> */}
       {/* <Suspense fallback={<div>Loading...</div>}> */}
+      <Themes>
         <BrowserRouter>
           <Routes>
             <Route element={<ValidatedRoute type="public" />}>
@@ -64,6 +66,7 @@ function App() {
           </Routes>
           <Toaster />
         </BrowserRouter>
+      </Themes>
       {/* </Suspense> */}
     </>
   )

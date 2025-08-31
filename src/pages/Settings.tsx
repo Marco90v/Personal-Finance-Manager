@@ -14,6 +14,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 // import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
+import Preference from "@/components/Preference"
 
 const schema = z.object({
   currency: z.string().min(1, "Select a currency"),
@@ -80,6 +81,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
   const [showConfirm, setShowConfirm] = React.useState(false)
 
   async function handleSubmit(values: ConfigurationFormValues) {
+    // console.log(values)
     try {
       if (onSubmit) {
         await onSubmit(values)
@@ -115,16 +117,16 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
     }
   }
 
-  const currencyPreview = React.useMemo(() => {
-    try {
-      return new Intl.NumberFormat(undefined, {
-        style: "currency",
-        currency: form.watch("currency") || "USD",
-      }).format(3500)
-    } catch {
-      return "$3,500.00"
-    }
-  }, [form])
+  // const currencyPreview = React.useMemo(() => {
+  //   try {
+  //     return new Intl.NumberFormat(undefined, {
+  //       style: "currency",
+  //       currency: form.watch("currency") || "USD",
+  //     }).format(3500)
+  //   } catch {
+  //     return "$3,500.00"
+  //   }
+  // }, [form])
 
   const isSubmitting = form.formState.isSubmitting
   const hasPasswordChange =
@@ -148,74 +150,9 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
         </Button>
       </header>
 
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         {/* Preferences */}
-        <Card className="border-muted-foreground/10">
-          <CardHeader>
-            <CardTitle>Preferences</CardTitle>
-            <CardDescription>Choose your currency and appearance.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-6 md:grid-cols-2">
-            {/* Currency */}
-            <div className="space-y-2">
-              <Label htmlFor="currency">Currency</Label>
-              <Select
-                value={form.watch("currency")}
-                onValueChange={(val) => form.setValue("currency", val, { shouldDirty: true, shouldValidate: true })}
-              >
-                <SelectTrigger id="currency" disabled={true} className="bg-white border-border">
-                  <SelectValue placeholder="Select currency" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="USD">USD — United States Dollar</SelectItem>
-                  <SelectItem value="EUR">EUR — Euro</SelectItem>
-                  <SelectItem value="GBP">GBP — British Pound</SelectItem>
-                  <SelectItem value="JPY">JPY — Japanese Yen</SelectItem>
-                  <SelectItem value="BRL">BRL — Brazilian Real</SelectItem>
-                  <SelectItem value="MXN">MXN — Mexican Peso</SelectItem>
-                  <SelectItem value="ARS">ARS — Argentine Peso</SelectItem>
-                  <SelectItem value="CLP">CLP — Chilean Peso</SelectItem>
-                  <SelectItem value="COP">COP — Colombian Peso</SelectItem>
-                  <SelectItem value="INR">INR — Indian Rupee</SelectItem>
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground">Preview: {currencyPreview}</p>
-              {form.formState.errors.currency && (
-                <p className="text-xs text-destructive">{form.formState.errors.currency.message}</p>
-              )}
-            </div>
-
-            {/* Theme */}
-            <div className="space-y-2">
-              <Label>Theme</Label>
-              <ToggleGroup
-                type="single"
-                value={form.watch("theme")}
-                onValueChange={(val) => {
-                  if (!val) return
-                  form.setValue("theme", val as "light" | "dark", { shouldDirty: true, shouldValidate: true })
-                }}
-                className="w-fit rounded-md border bg-background p-1"
-              >
-                <ToggleGroupItem value="light" aria-label="Light" className="gap-2 cursor-pointer">
-                  <Sun className="h-4 w-4" />
-                  <span className="hidden sm:inline">Light</span>
-                </ToggleGroupItem>
-                <ToggleGroupItem value="dark" aria-label="Dark" className="gap-2 cursor-pointer">
-                  <Moon className="h-4 w-4" />
-                  <span className="hidden sm:inline">Dark</span>
-                </ToggleGroupItem>
-              </ToggleGroup>
-              <p className="text-xs text-muted-foreground">Switch between light and dark modes.</p>
-            </div>
-          </CardContent>
-          <CardFooter className="justify-end">
-            <Button type="submit" className="gap-2 cursor-pointer" disabled={isSubmitting}>
-              <Save className="h-4 w-4" />
-              Save preferences
-            </Button>
-          </CardFooter>
-        </Card>
+        <Preference />
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
 
         {/* Password */}
         <Card className="border-muted-foreground/10">
