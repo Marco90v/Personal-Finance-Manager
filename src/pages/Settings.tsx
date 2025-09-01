@@ -1,13 +1,13 @@
-import * as React from "react"
+// import * as React from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Eye, EyeOff, RefreshCw, ShieldCheck } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+// import { Input } from "@/components/ui/input"
+// import { Label } from "@/components/ui/label"
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 // import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -15,6 +15,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 // import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
 import Preference from "@/components/Preference"
+import ChangePassword from "@/components/ChangePassword"
 
 const schema = z.object({
   currency: z.string().min(1, "Select a currency"),
@@ -76,9 +77,9 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
     mode: "onBlur",
   })
 
-  const [showCurrent, setShowCurrent] = React.useState(false)
-  const [showNew, setShowNew] = React.useState(false)
-  const [showConfirm, setShowConfirm] = React.useState(false)
+  // const [showCurrent, setShowCurrent] = React.useState(false)
+  // const [showNew, setShowNew] = React.useState(false)
+  // const [showConfirm, setShowConfirm] = React.useState(false)
 
   async function handleSubmit(values: ConfigurationFormValues) {
     // console.log(values)
@@ -128,9 +129,9 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
   //   }
   // }, [form])
 
-  const isSubmitting = form.formState.isSubmitting
-  const hasPasswordChange =
-    !!form.watch("currentPassword") || !!form.watch("newPassword") || !!form.watch("confirmPassword")
+  // const isSubmitting = form.formState.isSubmitting
+  // const hasPasswordChange =
+  //   !!form.watch("currentPassword") || !!form.watch("newPassword") || !!form.watch("confirmPassword")
 
   return (
     <section className={cn("mx-auto w-full max-w-4xl space-y-6 p-2 md:p-4", className)} aria-label="Configuration">
@@ -139,7 +140,7 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
           <h1 className="text-xl font-semibold tracking-tight">Configuration</h1>
           <p className="text-sm text-muted-foreground">Update preferences and manage your local data.</p>
         </div>
-        <Button
+        {/* <Button
           type="button"
           variant="outline"
           className="gap-2 cursor-pointer"
@@ -147,108 +148,16 @@ export default function Configuration({ defaultValues, onSubmit, onResetData, cl
         >
           <RefreshCw className="h-4 w-4" />
           Reset form
-        </Button>
+        </Button> */}
       </header>
 
       {/* Preferences */}
       <Preference />
 
+      {/* Password */}
+      <ChangePassword />
+
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        {/* Password */}
-        <Card className="border-muted-foreground/10">
-          <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>Change your password. Leave fields empty to keep your current password.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="currentPassword">Current password</Label>
-              <div className="relative">
-                <Input
-                  className="bg-white border-border"
-                  id="currentPassword"
-                  type={showCurrent ? "text" : "password"}
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                  {...form.register("currentPassword")}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-1 top-1/2 -translate-y-1/2"
-                  onClick={() => setShowCurrent((s) => !s)}
-                  aria-label={showCurrent ? "Hide current password" : "Show current password"}
-                >
-                  {showCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="newPassword">New password</Label>
-              <div className="relative">
-                <Input
-                  className="bg-white border-border"
-                  id="newPassword"
-                  type={showNew ? "text" : "password"}
-                  placeholder="At least 8 characters"
-                  autoComplete="new-password"
-                  {...form.register("newPassword")}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-1 top-1/2 -translate-y-1/2"
-                  onClick={() => setShowNew((s) => !s)}
-                  aria-label={showNew ? "Hide new password" : "Show new password"}
-                >
-                  {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
-              </div>
-              {form.formState.errors.newPassword && (
-                <p className="text-xs text-destructive">{form.formState.errors.newPassword.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm new password</Label>
-              <div className="relative">
-                <Input
-                  className="bg-white border-border"
-                  id="confirmPassword"
-                  type={showConfirm ? "text" : "password"}
-                  placeholder="Repeat new password"
-                  autoComplete="new-password"
-                  {...form.register("confirmPassword")}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-1 top-1/2 -translate-y-1/2"
-                  onClick={() => setShowConfirm((s) => !s)}
-                  aria-label={showConfirm ? "Hide confirm password" : "Show confirm password"}
-                >
-                  {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
-              </div>
-              {form.formState.errors.confirmPassword && (
-                <p className="text-xs text-destructive">{form.formState.errors.confirmPassword.message}</p>
-              )}
-            </div>
-          </CardContent>
-          <CardFooter className="justify-between flex-col gap-3 sm:flex-row sm:gap-0">
-            <p className={cn("text-xs text-muted-foreground", !hasPasswordChange && "opacity-70")}>
-              Tip: Use a strong passphrase with numbers and symbols.
-            </p>
-            <Button type="submit" className="gap-2 cursor-pointer" disabled={isSubmitting || !hasPasswordChange}>
-              <ShieldCheck className="h-4 w-4" />
-              Update password
-            </Button>
-          </CardFooter>
-        </Card>
 
         {/* Danger zone */}
         <Card className="border-destructive/20">
