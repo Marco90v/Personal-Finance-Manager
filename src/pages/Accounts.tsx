@@ -123,7 +123,7 @@ export default function AccountsManager() {
                     <FormItem>
                       <FormLabel>Account Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Chase Checking, Cash Wallet" {...field} />
+                        <Input placeholder="e.g., Chase Checking, Cash Wallet" className="bg-white border-border" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -144,7 +144,7 @@ export default function AccountsManager() {
                               type="text"
                               step="0,01"
                               placeholder="0,00"
-                              className="pl-10"
+                              className="pl-10 bg-white border-border"
                               value={formatNumber(field.value ?? "")}
                               onChange={(e) =>{
                                 const start = e.target.selectionStart ?? 0;
@@ -170,7 +170,7 @@ export default function AccountsManager() {
                       <FormLabel>Associated Account</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value || ""}>
                         <FormControl>
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger className="w-full bg-white border-border">
                             <SelectValue placeholder="Select account" />
                           </SelectTrigger>
                         </FormControl>
@@ -193,7 +193,7 @@ export default function AccountsManager() {
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Input placeholder="Description" {...field} />
+                        <Input placeholder="Description" className="bg-white border-border"  {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

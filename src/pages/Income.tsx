@@ -81,7 +81,7 @@ function AddIncomeForm() {
                           type="text"
                           step="0,01"
                           placeholder="0,00"
-                          className="pl-10"
+                          className="pl-10 bg-white border-border"
                           value={formatNumber(field.value ?? "")}
                           onChange={(e) =>{
                             const start = e.target.selectionStart ?? 0;
