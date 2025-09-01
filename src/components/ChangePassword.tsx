@@ -1,14 +1,12 @@
-import { Eye, EyeOff, ShieldCheck } from "lucide-react"
+import { ShieldCheck } from "lucide-react"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
-import { Input } from "./ui/input"
-import { Label } from "./ui/label"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
 import { cn } from "@/lib/utils"
 import GetPasswordStrengthIndicator from "./GetPasswordStrengthIndicator"
 import { formSchemaChangePassword, type ChangePasswordFormValues } from "@/schemas/schemaChangePassword"
+import { PasswordInput } from "./common/PasswordInput"
 
 const DEFAULTS: ChangePasswordFormValues = {
   currentPassword: "",
@@ -18,120 +16,91 @@ const DEFAULTS: ChangePasswordFormValues = {
 
 const ChangePassword = () => {
 
-  const form = useForm<ChangePasswordFormValues>({
+  const {register, handleSubmit, watch, formState: { errors, isSubmitting }} = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(formSchemaChangePassword),
     defaultValues:DEFAULTS,
     mode: "onBlur",
   })
 
-  const [showCurrent, setShowCurrent] = useState(false)
-  const [showNew, setShowNew] = useState(false)
-  const [showConfirm, setShowConfirm] = useState(false)
-
-  const isSubmitting = form.formState.isSubmitting
 
   const hasPasswordChange =
-    !!form.watch("currentPassword") || !!form.watch("newPassword") || !!form.watch("confirmPassword")
+    !!watch("currentPassword") || !!watch("newPassword") || !!watch("confirmPassword")
 
-  const newPassword = form.watch("newPassword")
+  const newPassword = watch("newPassword")
 
+  const onSubmit = async (data: ChangePasswordFormValues) => {
+    try {
+      console.log(data)
+      // await changePassword({
+      //   currentPassword: data.currentPassword,
+      //   newPassword: data.newPassword,
+      // })
+      // toast("Password changed!",{
+      //   description: "Your password has been changed.",
+      //   action:{
+      //     label: "Undo",
+      //     onClick: () => null,
+      //   }
+      // })
+    } catch (error) {
+      console.log(error)
+      // toast("Password change failed",{
+      //   description: error instanceof Error ? error.message : "Please try again.",
+      //   action:{
+      //     label: "Undo",
+      //     onClick: () => null,
+      //   }
+      // })
+    }
+  }
 
   return (
-    <Card className="border-muted-foreground/10">
-      <CardHeader>
-        <CardTitle>Password</CardTitle>
-        <CardDescription>Change your password. Leave fields empty to keep your current password.</CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4 md:grid-cols-3">
-        <div className="space-y-2">
-          <Label htmlFor="currentPassword">Current password</Label>
-          <div className="relative">
-            <Input
-              className="bg-white border-border"
-              id="currentPassword"
-              type={showCurrent ? "text" : "password"}
-              placeholder="••••••••"
-              autoComplete="current-password"
-              {...form.register("currentPassword")}
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2"
-              onClick={() => setShowCurrent((s) => !s)}
-              aria-label={showCurrent ? "Hide current password" : "Show current password"}
-            >
-              {showCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </Button>
-          </div>
-        </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <Card className="border-muted-foreground/10">
+        <CardHeader>
+          <CardTitle>Password</CardTitle>
+          <CardDescription>Change your password. Leave fields empty to keep your current password.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3">
 
-        <div className="space-y-2">
-          <Label htmlFor="newPassword">New password</Label>
-          <div className="relative">
-            <Input
-              className="bg-white border-border"
-              id="newPassword"
-              type={showNew ? "text" : "password"}
-              placeholder="At least 8 characters"
-              autoComplete="new-password"
-              {...form.register("newPassword")}
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2"
-              onClick={() => setShowNew((s) => !s)}
-              aria-label={showNew ? "Hide new password" : "Show new password"}
-            >
-              {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </Button>
-          </div>
-          <GetPasswordStrengthIndicator password={newPassword} />
-          {form.formState.errors.newPassword && (
-            <p className="text-xs text-destructive">{form.formState.errors.newPassword.message}</p>
-          )}
-        </div>
+          <PasswordInput
+            name="currentPassword"
+            label="Current password"
+            placeholder="••••••••"
+            register={register}
+            error={errors.currentPassword}
+          />
 
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm new password</Label>
-          <div className="relative">
-            <Input
-              className="bg-white border-border"
-              id="confirmPassword"
-              type={showConfirm ? "text" : "password"}
-              placeholder="Repeat new password"
-              autoComplete="new-password"
-              {...form.register("confirmPassword")}
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2"
-              onClick={() => setShowConfirm((s) => !s)}
-              aria-label={showConfirm ? "Hide confirm password" : "Show confirm password"}
-            >
-              {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </Button>
-          </div>
-          {form.formState.errors.confirmPassword && (
-            <p className="text-xs text-destructive">{form.formState.errors.confirmPassword.message}</p>
-          )}
-        </div>
-      </CardContent>
-      <CardFooter className="justify-between flex-col gap-3 sm:flex-row sm:gap-0">
-        <p className={cn("text-xs text-muted-foreground", !hasPasswordChange && "opacity-70")}>
-          Tip: Use a strong passphrase with numbers and symbols.
-        </p>
-        <Button type="submit" className="gap-2 cursor-pointer" disabled={isSubmitting || !hasPasswordChange}>
-          <ShieldCheck className="h-4 w-4" />
-          Update password
-        </Button>
-      </CardFooter>
-    </Card>
+          <PasswordInput
+            name="newPassword"
+            label="New password"
+            placeholder="At least 8 characters"
+            register={register}
+            error={errors.newPassword}
+          >
+            <GetPasswordStrengthIndicator password={newPassword} />
+          </PasswordInput>
+
+          <PasswordInput
+            name="confirmPassword"
+            label="Confirm new password"
+            placeholder="Repeat new password"
+            register={register}
+            error={errors.confirmPassword}
+          />
+
+        </CardContent>
+        <CardFooter className="justify-between flex-col gap-3 sm:flex-row sm:gap-0">
+          <p className={cn("text-xs text-muted-foreground", !hasPasswordChange && "opacity-70")}>
+            Tip: Use a strong passphrase with numbers and symbols.
+          </p>
+          <Button type="submit" className="gap-2 cursor-pointer" disabled={isSubmitting || !hasPasswordChange}>
+            <ShieldCheck className="h-4 w-4" />
+            Update password
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   )
 }
 
