@@ -1,8 +1,6 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useAuthStore } from "@/stores/authStore"
 import { registerSchema } from "@/schemas/schemaAuth"
@@ -14,6 +12,7 @@ import SeparatorLoginRegister from "@/components/common/SeparatorLoginRegister"
 import SocialLoginRegister from "@/components/common/SocialLoginRegister"
 import SwitchLoginRegister from "@/components/common/SwitchLoginRegister"
 import { PasswordInput } from "@/components/common/PasswordInput"
+import { InputField } from "@/components/common/InputField"
 
 
 export default function RegisterForm() {
@@ -66,42 +65,30 @@ export default function RegisterForm() {
         <CardContent className="space-y-4">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First name</Label>
-                <Input
-                  id="firstName"
-                  placeholder="John"
-                  {...register("firstName")}
-                  // className={errors.firstName ? "border-destructive" : ""}
-                  className={`bg-white border-border ${errors.lastName ? "border-destructive" : ""}`}
-                />
-                {errors.firstName && <p className="text-sm text-destructive">{errors.firstName.message}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last name</Label>
-                <Input
-                  id="lastName"
-                  placeholder="Doe"
-                  {...register("lastName")}
-                  // className={errors.lastName ? "border-destructive" : ""}
-                  className={`bg-white border-border ${errors.lastName ? "border-destructive" : ""}`}
-                />
-                {errors.lastName && <p className="text-sm text-destructive">{errors.lastName.message}</p>}
-              </div>
+              <InputField
+                name="firstName"
+                label="First name"
+                placeholder="John"
+                register={register}
+                error={errors.firstName}
+              />
+              <InputField
+                name="lastName"
+                label="Last name"
+                placeholder="Doe"
+                register={register}
+                error={errors.lastName}
+              />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="john@example.com"
-                {...register("email")}
-                // className={errors.email ? "border-destructive" : ""}
-                className={`bg-white border-border ${errors.lastName ? "border-destructive" : ""}`}
-              />
-              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
-            </div>
+            <InputField
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="john@example.com"
+              register={register}
+              error={errors.email}
+            />
 
             <PasswordInput
               name="password"
