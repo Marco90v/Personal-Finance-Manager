@@ -1,6 +1,6 @@
 // mockData.js
 
-import type { Account, ExpensesType, IncomesType, Transaction } from "@/type";
+import type { Account, BudgetVersion, ExpensesType, IncomesType, Transaction } from "@/type";
 
 export const typeAccounts = [
   {id : "0001", name: "bank"},
@@ -15,19 +15,19 @@ export const accounts:Account[] = [
 ];
 
 export const transacciones: Transaction[] = [
-  { id: "Demotx_001", type: "income", recurrence: null, amount: 1000, date: "2025-06-01", origin: "Sueldo", accountId: "cuenta_1", notes: "Pago mensual de trabajo" },
-  { id: "Demotx_004", type: "expense", recurrence: "fixed", amount: 200, date: "2025-06-03", origin: "Alquiler", accountId: "cuenta_1", notes: "Renta del mes" },
-  { id: "tx_001", type: "income", recurrence: null, amount: 2500, date: "2025-08-01", origin: "Sueldo", accountId: "cuenta_1", notes: "Pago mensual de trabajo" },
-  { id: "tx_002", type: "income", recurrence: null, amount: 300, date: "2025-08-12", origin: "Freelance", accountId: "cuenta_1", notes: "Diseño landing page" },
-  { id: "tx_003", type: "income", recurrence: null, amount: 100, date: "2025-08-15", origin: "Venta", accountId: "cuenta_2", notes: "Venta de accesorios usados" },
-  { id: "tx_004", type: "expense", recurrence: "fixed", amount: 700, date: "2025-08-03", origin: "Alquiler", accountId: "cuenta_1", notes: "Renta del mes" },
-  { id: "tx_005", type: "expense", recurrence: "fixed", amount: 100, date: "2025-08-05", origin: "Servicios", accountId: "cuenta_1", notes: "Internet y luz" },
-  { id: "tx_006", type: "expense", recurrence: "fixed", amount: 50, date: "2025-08-06", origin: "Suscripciones", accountId: "cuenta_1", notes: "Netflix y Spotify" },
-  { id: "tx_007", type: "expense", recurrence: "variable", amount: 80, date: "2025-08-10", origin: "Comida", accountId: "cuenta_2", notes: "Supermercado semanal" },
-  { id: "tx_008", type: "expense", recurrence: "variable", amount: 40, date: "2025-08-13", origin: "Transporte", accountId: "cuenta_2", notes: "Gasolina" },
-  { id: "tx_009", type: "expense", recurrence: "variable", amount: 120, date: "2025-08-18", origin: "Ocio", accountId: "cuenta_1", notes: "Cena con amigos" },
-  { id: "tx_010", type: "expense", recurrence: "variable", amount: 60, date: "2025-08-20", origin: "Compras", accountId: "cuenta_2", notes: "Ropa nueva" },
-  { id: "asd", type: "expense", recurrence: "variable", amount: 60, date: "2025-08-20", origin: "Compras", accountId: "cuenta_2", notes: "Ropa nueva" },
+  { id: "Demotx_001", type: "income", recurrence: null, amount: 1000, date: "2025-06-01", expenseTypeId: "i0002", accountId: "cuenta_1", notes: "Pago mensual de trabajo" },
+  { id: "Demotx_004", type: "expense", recurrence: "fixed", amount: 200, date: "2025-06-03", expenseTypeId: "e0002", accountId: "cuenta_1", notes: "Renta del mes" },
+  { id: "tx_001", type: "income", recurrence: null, amount: 2500, date: "2025-08-01", expenseTypeId: "i0002", accountId: "cuenta_1", notes: "Pago mensual de trabajo" },
+  { id: "tx_002", type: "income", recurrence: null, amount: 300, date: "2025-08-12", expenseTypeId: "i0003", accountId: "cuenta_1", notes: "Diseño landing page" },
+  { id: "tx_003", type: "income", recurrence: null, amount: 100, date: "2025-08-15", expenseTypeId: "i0004", accountId: "cuenta_2", notes: "Venta de accesorios usados" },
+  { id: "tx_004", type: "expense", recurrence: "fixed", amount: 700, date: "2025-08-03", expenseTypeId: "e0002", accountId: "cuenta_1", notes: "Renta del mes" },
+  { id: "tx_005", type: "expense", recurrence: "fixed", amount: 100, date: "2025-08-05", expenseTypeId: "e0003", accountId: "cuenta_1", notes: "Internet y luz" },
+  { id: "tx_006", type: "expense", recurrence: "fixed", amount: 50, date: "2025-08-06", expenseTypeId: "e0008", accountId: "cuenta_1", notes: "Netflix y Spotify" },
+  { id: "tx_007", type: "expense", recurrence: "variable", amount: 80, date: "2025-08-10", expenseTypeId: "e0004", accountId: "cuenta_2", notes: "Supermercado semanal" },
+  { id: "tx_008", type: "expense", recurrence: "variable", amount: 40, date: "2025-08-13", expenseTypeId: "e0005", accountId: "cuenta_2", notes: "Gasolina" },
+  { id: "tx_009", type: "expense", recurrence: "variable", amount: 120, date: "2025-08-18", expenseTypeId: "e0006", accountId: "cuenta_1", notes: "Cena con amigos" },
+  { id: "tx_010", type: "expense", recurrence: "variable", amount: 60, date: "2025-08-20", expenseTypeId: "e0007", accountId: "cuenta_2", notes: "Ropa nueva" },
+  { id: "asd", type: "expense", recurrence: "variable", amount: 60, date: "2025-08-20", expenseTypeId: "e0007", accountId: "cuenta_2", notes: "Ropa nueva" },
 ];
 
 export const incomesTypes:IncomesType[] = [
@@ -50,4 +50,76 @@ export const expensesTypes:ExpensesType[] = [
   {id: "e0010", name: "Luz", description: "Gastos de luz"},
   {id: "e0011", name: "Netflix", description: "Gastos de Netflix"},
   {id: "e0012", name: "Spotify", description: "Gastos de Spotify"},
+];
+
+
+
+// Relacionamos budgets con `expensesTypes` (ej: "e0004" = comida)
+export const budgets: BudgetVersion[] = [
+  // Agosto 2025
+  {
+    id: "b001",
+    categoryId: "e0002", // Alquiler
+    allocated: 800,
+    effectiveDate: "2025-08-01", // vigente desde inicio de agosto
+    color: "#f87171",
+  },
+  {
+    id: "b002",
+    categoryId: "e0003", // Servicios
+    allocated: 150,
+    effectiveDate: "2025-08-01",
+    color: "#60a5fa",
+  },
+  {
+    id: "b003",
+    categoryId: "e0004", // Comida
+    allocated: 400,
+    effectiveDate: "2025-08-05", // creado el 5 de agosto
+    color: "#8b5cf6",
+  },
+  {
+    id: "b004",
+    categoryId: "e0005", // Transporte
+    allocated: 120,
+    effectiveDate: "2025-08-01",
+    color: "#06b6d4",
+  },
+  {
+    id: "b005",
+    categoryId: "e0006", // Ocio
+    allocated: 200,
+    effectiveDate: "2025-08-01",
+    color: "#f59e0b",
+  },
+  {
+    id: "b006",
+    categoryId: "e0007", // Compras
+    allocated: 300,
+    effectiveDate: "2025-08-01",
+    color: "#10b981",
+  },
+  {
+    id: "b007",
+    categoryId: "e0008", // Suscripciones
+    allocated: 60,
+    effectiveDate: "2025-08-01",
+    color: "#6366f1",
+  },
+
+  // Septiembre 2025 - actualización parcial
+  {
+    id: "b008",
+    categoryId: "e0004", // Comida
+    allocated: 500,
+    effectiveDate: "2025-09-03", // nuevo presupuesto desde 3 de septiembre
+    color: "#8b5cf6",
+  },
+  {
+    id: "b009",
+    categoryId: "e0006", // Ocio
+    allocated: 300,
+    effectiveDate: "2025-09-20", // reajuste el 20 de septiembre
+    color: "#f59e0b",
+  },
 ];

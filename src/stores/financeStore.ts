@@ -1,9 +1,10 @@
-import type { Account, ExpenseTransaction, FilterTransByMonth, IncomeTransaction, Transaction } from "@/type";
+import type { Account, BudgetVersion, ExpenseTransaction, FilterTransByMonth, IncomeTransaction, Transaction } from "@/type";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
   accounts as cuentasMock,
   transacciones as transaccionesMock,
+  budgets as budgetsMock,
 } from "@/data/mockData";
 import { EXPENSE, INCOME } from "@/lib/const";
 import dayjs from "dayjs";
@@ -13,6 +14,8 @@ interface FinanceStore {
   accounts: Account[];
   transactions: Transaction[];
   filterDate: string | undefined;
+  budgets: BudgetVersion[];
+
   addAccount: (cuenta: Account) => void;
   updateAccount: (id: string, data: Partial<Account>) => void;
   removeAccount: (id: string) => void;
@@ -39,6 +42,7 @@ export const useFinanceStore = create<FinanceStore>()(
       accounts: cuentasMock,
       transactions: transaccionesMock,
       filterDate: undefined,
+      budgets: budgetsMock,
 
       addAccount: (account) =>
         set((state) => ({ accounts: [...state.accounts, account] })),

@@ -23,7 +23,7 @@ const Home = () => {
         <Goals />
       </div>
       <div className="p-6 mx-auto max-w-[1440px] grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Spending />
+        {/* <Spending /> */}
       </div>
     </>
   )
