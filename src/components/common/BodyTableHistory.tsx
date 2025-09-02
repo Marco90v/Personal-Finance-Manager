@@ -6,6 +6,7 @@ import { useFinanceStore } from "@/stores/financeStore";
 import { useShallow } from "zustand/shallow";
 import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
+import { getNameCategory } from "@/lib/functions";
 
 interface Props {
   transaction: Transaction;
@@ -31,7 +32,7 @@ const BodyTableHistory = ({transaction}: Props) => {
           {transaction.type === "income" ? "Income" : "Expense"}
         </span>
       </TableCell>
-      <TableCell>{transaction.origin}</TableCell>
+      <TableCell>{getNameCategory(transaction.expenseTypeId)}</TableCell>
       {/* <TableCell>{transaction.description}</TableCell> */}
       <TableCell>{getNameAccount(transaction.accountId)}</TableCell>
       <TableCell className="text-right font-medium">
