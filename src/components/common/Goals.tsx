@@ -58,7 +58,7 @@ const Goals = () => {
                 <span>${goal.current.toLocaleString()}</span>
                 <span>${goal.target.toLocaleString()}</span>
               </div>
-              <Progress
+              {/* <Progress
                 value={goal.progress}
                 className="h-2"
                 style={
@@ -66,6 +66,16 @@ const Goals = () => {
                     "--progress-background": goal.color,
                   } as React.CSSProperties
                 }
+              /> */}
+              <Progress
+                value={Math.min(goal.progress, 100)}
+                className="h-2"
+                // style={
+                //   {
+                //     "--progress-background": isOverBudget ? "#ef4444" : budget.color,
+                //   } as React.CSSProperties
+                // }
+                indicatorColor={goal.color}
               />
               <div className="text-xs text-gray-600">
                 ${(goal.target - goal.current).toLocaleString()} remaining

@@ -1,4 +1,4 @@
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts" 
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart"
 
@@ -11,7 +11,6 @@ const categoryData = [
   { name: "Healthcare", value: 300, color: "#ec4899" },
 ]
 
-{/* Spending by Category Chart */}
 const Spending = () => {
   return (
     <Card>
@@ -21,16 +20,17 @@ const Spending = () => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-8">
+          {/* Chart */}
           <div className="flex-1">
-            <ChartContainer config={{}} className="h-[200px]">
+            <ChartContainer config={{}} className="aspect-square w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={categoryData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
+                    innerRadius="40%"
+                    outerRadius="70%"
                     paddingAngle={2}
                     dataKey="value"
                   >
@@ -43,9 +43,13 @@ const Spending = () => {
                       if (active && payload && payload.length) {
                         const data = payload[0].payload
                         return (
-                          <div className="rounded-lg border bg-white p-3 shadow-md">
-                            <p className="font-medium">{data.name}</p>
-                            <p className="text-sm text-gray-600">${data.value.toLocaleString()}</p>
+                          <div className="max-w-xs rounded-lg border bg-white p-3 shadow-md">
+                            <p className="font-medium break-words text-sm sm:text-base truncate">
+                              {data.name}
+                            </p>
+                            <p className="text-xs sm:text-sm text-gray-600">
+                              ${data.value.toLocaleString()}
+                            </p>
                           </div>
                         )
                       }
@@ -56,13 +60,20 @@ const Spending = () => {
               </ResponsiveContainer>
             </ChartContainer>
           </div>
-          <div className="space-y-2">
+
+          {/* Legend */}
+          <div className="space-y-2 w-full max-w-xs">
             {categoryData.map((category, index) => (
               <div key={index} className="flex items-center gap-3">
-                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: category.color }} />
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{category.name}</p>
-                  <p className="text-xs text-gray-600">${category.value.toLocaleString()}</p>
+                <div
+                  className="h-3 w-3 rounded-full shrink-0"
+                  style={{ backgroundColor: category.color }}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{category.name}</p>
+                  <p className="text-xs text-gray-600">
+                    ${category.value.toLocaleString()}
+                  </p>
                 </div>
               </div>
             ))}
