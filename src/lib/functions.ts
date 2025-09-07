@@ -21,7 +21,7 @@ export function getBudgetsForMonth(
 
     const effDate = new Date(b.effectiveDate);
     // if (effDate <= targetDate) {
-    if (effDate.getMonth() <= targetDate.getMonth()) {
+    if (effDate.getMonth() <= targetDate.getMonth() && effDate.getFullYear() <= targetDate.getFullYear()) {
       latestByCategory.set(b.categoryId, b);
     }
   }
