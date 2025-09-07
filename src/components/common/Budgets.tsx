@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress"
 import { getBudgetsWithSpending, getNameCategory } from "@/lib/functions"
 import { useShallow } from "zustand/shallow"
 import { useFinanceStore } from "@/stores/financeStore"
+import dayjs from "dayjs"
 
 // const budgets = [
 //   {
@@ -42,12 +43,16 @@ import { useFinanceStore } from "@/stores/financeStore"
 
 const Budgets = () => {
 
-  const {transacciones, budgets} = useFinanceStore(useShallow(s=> ({
+  const {transacciones, budgets, filterDate} = useFinanceStore(useShallow(s=> ({
     transacciones: s.transactions,
-    budgets: s.budgets
+    budgets: s.budgets,
+    filterDate: s.filterDate
   })));
 
-  const data = getBudgetsWithSpending(budgets, transacciones, "2025-08-31");
+  
+  const currentDate = dayjs().format("YYYY-MM-DD");
+  const data = getBudgetsWithSpending(budgets, transacciones, filterDate ?? currentDate);
+  // console.log(filterDate);
   // console.log(data);
 
   return (
