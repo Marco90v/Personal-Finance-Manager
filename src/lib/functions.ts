@@ -20,7 +20,8 @@ export function getBudgetsForMonth(
     if (latestByCategory.has(b.categoryId)) continue; // ya tenemos el más reciente
 
     const effDate = new Date(b.effectiveDate);
-    if (effDate <= targetDate) {
+    // if (effDate <= targetDate) {
+    if (effDate.getMonth() <= targetDate.getMonth()) {
       latestByCategory.set(b.categoryId, b);
     }
   }
