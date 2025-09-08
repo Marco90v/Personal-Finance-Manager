@@ -85,3 +85,19 @@ export interface BudgetVersion {
   effectiveDate: string;  // fecha en que entra en vigor
   color?: string;
 }
+
+export interface SavingGoalHistory {
+  date: string;           // Fecha de la actualización (ej: "2025-08-10")
+  amount: number;         // Cantidad acumulada en esa fecha
+}
+
+export interface SavingGoal {
+  id: string;
+  name: string;              // Ej: "Vacaciones"
+  targetAmount: number;      // Meta final
+  history: SavingGoalHistory[];
+  completedAt: string | null;      // Fecha en que fue marcado como cumplido
+  createdAt: string;
+  color?: string;
+}
+

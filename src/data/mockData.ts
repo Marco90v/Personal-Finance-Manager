@@ -1,6 +1,6 @@
 // mockData.js
 
-import type { Account, BudgetVersion, ExpensesType, IncomesType, Transaction } from "@/type";
+import type { Account, BudgetVersion, ExpensesType, IncomesType, SavingGoal, Transaction } from "@/type";
 
 export const typeAccounts = [
   {id : "0001", name: "bank"},
@@ -123,3 +123,32 @@ export const budgets: BudgetVersion[] = [
     color: "#f59e0b",
   },
 ];
+
+export const savingGoals: SavingGoal[] = [
+  {
+    id: "goal_001",
+    name: "Vacaciones",
+    targetAmount: 2000,
+    history: [
+      { date: "2025-08-01", amount: 600 },  // agosto → tenías $600
+      { date: "2025-09-05", amount: 700 },  // septiembre → agregaste $100 más
+    ],
+    createdAt: "2025-08-01",
+    completedAt: "2025-12-01", // Se cumplió en diciembre
+    color: "#8b5cf6",
+  },
+  {
+    id: "goal_002",
+    name: "Auto nuevo",
+    targetAmount: 10000,
+    history: [
+      { date: "2025-07-15", amount: 500 }, 
+      { date: "2025-09-10", amount: 1200 }, 
+    ],
+    createdAt: "2025-07-15",
+    completedAt: null,
+    color: "#06b6d4",
+  }
+];
+
+
